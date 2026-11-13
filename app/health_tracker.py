@@ -12,12 +12,14 @@ import streamlit as st
 # CONFIGURATION
 # ============================================================
 
-DB_PATH = "DATA/health_tracker.db"
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+DB_PATH = PROJECT_ROOT / "DATA" / "health_tracker.db"
+
 USER_ID = "local_prototype"
 
 
 # ============================================================
-# DATABASE
+# DATABASE TABLES
 # ============================================================
 
 def create_health_table(conn):
@@ -45,6 +47,23 @@ def create_health_table(conn):
         )
     """)
 
+
+def create_profile_table(conn):
+
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS user_profile (
+
+            user_id TEXT PRIMARY KEY,
+            gender TEXT,
+            height_cm REAL
+
+        )
+    """)
+
+
+# ============================================================
+# DATABASE INITIALIZATION AND MIGRATION
+# ============================================================
 
 def initialize_database(db_path=DB_PATH):
 
@@ -89,8 +108,6 @@ def initialize_database(db_path=DB_PATH):
                 ).fetchall()
             }
 
-            # Migrate an older database structure if necessary.
-
             if not required_columns.issubset(existing_columns):
 
                 old_records = [
@@ -99,8 +116,6 @@ def initialize_database(db_path=DB_PATH):
                         "SELECT * FROM health_records"
                     ).fetchall()
                 ]
-
-                # Remove the old index before renaming the table.
 
                 conn.execute("""
                     DROP INDEX IF EXISTS idx_health_date
@@ -162,30 +177,23 @@ def initialize_database(db_path=DB_PATH):
 
                         get_value("user_id") or USER_ID,
 
-                        get_value(
-                            "record_date",
-                            "date"
-                        ) or date.today().isoformat(),
+                        str(
+                            get_value("record_date", "date")
+                            or date.today().isoformat()
+                        ),
 
                         get_value("weight_kg", "weight"),
-
                         get_value("systolic_bp", "systolic"),
-
                         get_value("diastolic_bp", "diastolic"),
-
                         get_value("heart_rate_bpm", "heart_rate"),
-
                         get_value("glucose_mmol_l", "glucose"),
-
                         get_value("water_l", "water"),
-
                         get_value("sleep_hours", "sleep"),
-
                         get_value("activity_minutes", "activity"),
-
                         get_value("notes"),
 
-                        get_value("created_at") or datetime.now().isoformat()
+                        get_value("created_at")
+                        or datetime.now().isoformat()
 
                     ))
 
@@ -197,7 +205,7 @@ def initialize_database(db_path=DB_PATH):
 
             create_health_table(conn)
 
-        # Index for faster record retrieval.
+        create_profile_table(conn)
 
         conn.execute("""
             CREATE INDEX IF NOT EXISTS idx_health_date
@@ -206,6 +214,10 @@ def initialize_database(db_path=DB_PATH):
 
         conn.commit()
 
+
+# ============================================================
+# DATABASE OPERATIONS
+# ============================================================
 
 def load_records(db_path=DB_PATH):
 
@@ -285,6 +297,156 @@ def delete_record(record_id, db_path=DB_PATH):
 
 
 # ============================================================
+# PERSONAL PROFILE
+# ============================================================
+
+def load_profile(db_path=DB_PATH):
+
+    with sqlite3.connect(db_path) as conn:
+
+        row = conn.execute("""
+            SELECT gender, height_cm
+            FROM user_profile
+            WHERE user_id = ?
+        """, (USER_ID,)).fetchone()
+
+    if row:
+
+        return {
+            "gender": row[0],
+            "height_cm": row[1]
+        }
+
+    return {
+        "gender": "Prefer not to say",
+        "height_cm": None
+    }
+
+
+def save_profile(gender, height_cm, db_path=DB_PATH):
+
+    with sqlite3.connect(db_path) as conn:
+
+        conn.execute("""
+            INSERT INTO user_profile (
+                user_id,
+                gender,
+                height_cm
+            )
+
+            VALUES (?, ?, ?)
+
+            ON CONFLICT(user_id)
+
+            DO UPDATE SET
+
+                gender = excluded.gender,
+                height_cm = excluded.height_cm
+
+        """, (
+            USER_ID,
+            gender,
+            height_cm
+        ))
+
+        conn.commit()
+
+
+# ============================================================
+# SESSION STATE
+# ============================================================
+
+def initialize_session_state(profile):
+    """Initialize HealthSpace UI state once per Streamlit session."""
+
+    defaults = {
+
+        "health_page": "Overview",
+
+        "health_period": "Last 30 days",
+
+        "water_goal": 2.0,
+
+        "sleep_goal": 8.0,
+
+        "activity_goal": 30,
+
+        "health_history_search": ""
+
+    }
+
+    for key, default_value in defaults.items():
+
+        if key not in st.session_state:
+
+            st.session_state[key] = default_value
+
+    gender_options = [
+        "Prefer not to say",
+        "Male",
+        "Female",
+        "Other"
+    ]
+
+    saved_gender = (
+        profile.get("gender")
+        or "Prefer not to say"
+    )
+
+    if saved_gender not in gender_options:
+
+        saved_gender = "Prefer not to say"
+
+    if "health_profile_gender" not in st.session_state:
+
+        st.session_state["health_profile_gender"] = saved_gender
+
+    if "health_profile_height_cm" not in st.session_state:
+
+        st.session_state["health_profile_height_cm"] = (
+            profile.get("height_cm")
+        )
+
+
+# ============================================================
+# BMI CALCULATION
+# ============================================================
+
+def calculate_bmi(weight_kg, height_cm):
+
+    if weight_kg is None or height_cm is None:
+        return None
+
+    if pd.isna(weight_kg) or pd.isna(height_cm):
+        return None
+
+    if weight_kg <= 0 or height_cm <= 0:
+        return None
+
+    height_m = height_cm / 100
+
+    return weight_kg / (height_m ** 2)
+
+
+def bmi_category(bmi):
+
+    if bmi is None:
+        return "Not available"
+
+    if bmi < 18.5:
+        return "Underweight"
+
+    elif bmi < 25:
+        return "Normal weight"
+
+    elif bmi < 30:
+        return "Overweight"
+
+    else:
+        return "Obesity"
+
+
+# ============================================================
 # DESIGN / CSS
 # ============================================================
 
@@ -292,8 +454,6 @@ def apply_design():
 
     st.markdown("""
     <style>
-
-    /* Main background */
 
     [data-testid="stAppViewContainer"] {
         background-color: #eef0f4;
@@ -309,8 +469,6 @@ def apply_design():
         padding-bottom: 2rem;
     }
 
-    /* Sidebar */
-
     [data-testid="stSidebar"] {
         background-color: #ffffff;
         border-right: 1px solid #e8ebf0;
@@ -319,8 +477,6 @@ def apply_design():
     [data-testid="stSidebar"] h1 {
         color: #1555d5;
     }
-
-    /* Dashboard heading */
 
     .dashboard-heading {
         font-size: 32px;
@@ -336,16 +492,12 @@ def apply_design():
         margin-bottom: 20px;
     }
 
-    /* Cards */
-
     div[data-testid="stVerticalBlockBorderWrapper"] {
         background-color: #ffffff;
         border: 1px solid #e9edf3;
         border-radius: 19px;
         padding: 12px;
     }
-
-    /* Metric styling */
 
     [data-testid="stMetric"] {
         background: #f6f8fc;
@@ -361,8 +513,6 @@ def apply_design():
         color: #252a33;
         font-weight: 750;
     }
-
-    /* Blue weight card */
 
     .weight-card {
         background: linear-gradient(
@@ -393,6 +543,32 @@ def apply_design():
         opacity: 0.85;
     }
 
+    .bmi-card {
+        background: #ffffff;
+        border: 1px solid #e9edf3;
+        border-radius: 17px;
+        padding: 18px;
+        margin-top: 12px;
+    }
+
+    .bmi-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #737d8c;
+    }
+
+    .bmi-value {
+        font-size: 32px;
+        font-weight: 750;
+        color: #1555d5;
+        margin: 8px 0;
+    }
+
+    .bmi-description {
+        color: #737d8c;
+        font-size: 13px;
+    }
+
     .section-heading {
         font-size: 18px;
         font-weight: 700;
@@ -405,20 +581,14 @@ def apply_design():
         font-weight: 700;
     }
 
-    /* Buttons */
-
     .stButton button[kind="primary"] {
         background-color: #1555d5;
         border-radius: 10px;
     }
 
-    /* Tabs */
-
     button[data-baseweb="tab"] {
         font-weight: 600;
     }
-
-    /* Responsive */
 
     @media(max-width: 900px) {
 
@@ -595,12 +765,9 @@ def blood_pressure_chart(df):
 
     fig = go.Figure()
 
-    # Systolic pressure
-
     fig.add_trace(go.Scatter(
 
         x=labels,
-
         y=data["systolic_bp"],
 
         mode="lines+markers+text",
@@ -629,12 +796,9 @@ def blood_pressure_chart(df):
 
     ))
 
-    # Diastolic pressure
-
     fig.add_trace(go.Scatter(
 
         x=labels,
-
         y=data["diastolic_bp"],
 
         mode="lines+markers+text",
@@ -686,7 +850,7 @@ def blood_pressure_chart(df):
 
 
 # ============================================================
-# TRACKING CONSISTENCY CHART
+# TRACKING CONSISTENCY
 # ============================================================
 
 def consistency_chart(df):
@@ -709,8 +873,6 @@ def consistency_chart(df):
             errors="coerce"
         ).dt.normalize()
 
-    # Five rolling seven-day periods.
-
     for week in range(4, -1, -1):
 
         end = today - pd.Timedelta(
@@ -730,16 +892,13 @@ def consistency_chart(df):
             (dates <= end.normalize())
         ].nunique()
 
-        counts.append(
-            int(count)
-        )
+        counts.append(int(count))
 
     fig = go.Figure()
 
     fig.add_trace(go.Bar(
 
         x=weeks,
-
         y=counts,
 
         text=[
@@ -748,7 +907,6 @@ def consistency_chart(df):
         ],
 
         textposition="outside",
-
         cliponaxis=False,
 
         marker=dict(
@@ -774,13 +932,8 @@ def consistency_chart(df):
     )
 
     fig.update_yaxes(
-
         range=[0, 8],
-
-        tickvals=[
-            0, 2, 4, 6, 7
-        ]
-
+        tickvals=[0, 2, 4, 6, 7]
     )
 
     show_chart(fig)
@@ -789,7 +942,6 @@ def consistency_chart(df):
 # ============================================================
 # WEIGHT CARD
 # ============================================================
-
 
 def weight_card(df):
 
@@ -837,8 +989,6 @@ def weight_card(df):
                 f"{difference:+.1f} kg compared with previous entry"
             )
 
-    # Keep the HTML on one line to prevent Markdown code formatting.
-
     html = (
         f'<div class="weight-card">'
         f'<div class="small">⚖ WEIGHT OVERVIEW</div>'
@@ -853,6 +1003,58 @@ def weight_card(df):
     )
 
 
+# ============================================================
+# BMI CARD
+# ============================================================
+
+def bmi_card(df, height_cm):
+
+    weight_data = df.dropna(
+        subset=["weight_kg"]
+    )
+
+    if weight_data.empty or height_cm is None:
+
+        bmi = None
+
+    else:
+
+        latest_weight = float(
+            weight_data.iloc[-1]["weight_kg"]
+        )
+
+        bmi = calculate_bmi(
+            latest_weight,
+            height_cm
+        )
+
+    if bmi is None:
+
+        value = "—"
+        category = "Enter your height and record your weight"
+
+    else:
+
+        value = f"{bmi:.1f}"
+        category = bmi_category(bmi)
+
+    html = (
+        f'<div class="bmi-card">'
+        f'<div class="bmi-label">BMI OVERVIEW</div>'
+        f'<div class="bmi-value">{value}</div>'
+        f'<div class="bmi-description">{category}</div>'
+        f'</div>'
+    )
+
+    st.markdown(
+        html,
+        unsafe_allow_html=True
+    )
+
+    st.caption(
+        "BMI is an adult screening measure, not a medical diagnosis."
+    )
+
 
 # ============================================================
 # HYDRATION GAUGE
@@ -860,14 +1062,20 @@ def weight_card(df):
 
 def hydration_chart(df, water_goal):
 
-    dates = pd.to_datetime(
-        df["record_date"],
-        errors="coerce"
-    ) if not df.empty else pd.Series(dtype="datetime64[ns]")
+    if df.empty:
 
-    today_mask = dates.dt.date == date.today()
+        today_records = df.copy()
 
-    today_records = df.loc[today_mask].copy()
+    else:
+
+        dates = pd.to_datetime(
+            df["record_date"],
+            errors="coerce"
+        )
+
+        today_mask = dates.dt.date == date.today()
+
+        today_records = df.loc[today_mask].copy()
 
     today_records = today_records.dropna(
         subset=["water_l"]
@@ -964,11 +1172,8 @@ def hydration_chart(df, water_goal):
     )
 
     st.markdown(
-
         '<div class="section-heading">💧 Hydration Level</div>',
-
         unsafe_allow_html=True
-
     )
 
     show_chart(fig)
@@ -1007,22 +1212,16 @@ def sleep_chart(df, sleep_goal):
         return
 
     labels = chart_dates(data)
-
     values = data["sleep_hours"].tolist()
 
     colors = [
-
-        "#1555d5" if v >= sleep_goal
-        else "#30343b"
-
+        "#1555d5" if v >= sleep_goal else "#30343b"
         for v in values
-
     ]
 
     fig = go.Figure(go.Bar(
 
         x=labels,
-
         y=values,
 
         marker_color=colors,
@@ -1033,7 +1232,6 @@ def sleep_chart(df, sleep_goal):
         ],
 
         textposition="outside",
-
         cliponaxis=False
 
     ))
@@ -1046,7 +1244,6 @@ def sleep_chart(df, sleep_goal):
     )
 
     fig.update_yaxes(
-
         range=[
             0,
             max(
@@ -1055,7 +1252,6 @@ def sleep_chart(df, sleep_goal):
                 1
             )
         ]
-
     )
 
     show_chart(fig)
@@ -1084,22 +1280,16 @@ def activity_chart(df, activity_goal):
         return
 
     labels = chart_dates(data)
-
     values = data["activity_minutes"].tolist()
 
     colors = [
-
-        "#1555d5" if v >= activity_goal
-        else "#30343b"
-
+        "#1555d5" if v >= activity_goal else "#30343b"
         for v in values
-
     ]
 
     fig = go.Figure(go.Bar(
 
         x=labels,
-
         y=values,
 
         marker_color=colors,
@@ -1110,7 +1300,6 @@ def activity_chart(df, activity_goal):
         ],
 
         textposition="outside",
-
         cliponaxis=False
 
     ))
@@ -1123,7 +1312,6 @@ def activity_chart(df, activity_goal):
     )
 
     fig.update_yaxes(
-
         range=[
             0,
             max(
@@ -1132,7 +1320,90 @@ def activity_chart(df, activity_goal):
                 1
             )
         ]
+    )
 
+    show_chart(fig)
+
+
+# ============================================================
+# REUSABLE HISTORY CHART
+# ============================================================
+
+def render_history_chart(
+    df,
+    column,
+    title,
+    y_title,
+    chart_type="line",
+    unit=""
+):
+
+    data = df.dropna(
+        subset=[column]
+    ).tail(20)
+
+    if data.empty:
+
+        st.info(
+            f"No {title.lower()} measurements recorded yet."
+        )
+
+        return
+
+    labels = chart_dates(data)
+    values = data[column].tolist()
+
+    if chart_type == "bar":
+
+        fig = go.Figure(go.Bar(
+
+            x=labels,
+            y=values,
+
+            marker_color="#1555d5",
+
+            text=[
+                f"{v:g} {unit}"
+                for v in values
+            ],
+
+            textposition="outside",
+            cliponaxis=False
+
+        ))
+
+    else:
+
+        fig = go.Figure(go.Scatter(
+
+            x=labels,
+            y=values,
+
+            mode="lines+markers+text",
+
+            text=[
+                f"{v:g} {unit}"
+                for v in values
+            ],
+
+            textposition="top center",
+
+            line=dict(
+                color="#1555d5",
+                width=3,
+                shape="spline"
+            ),
+
+            marker=dict(size=8),
+
+            cliponaxis=False
+
+        ))
+
+    chart_style(
+        fig,
+        title,
+        y_title
     )
 
     show_chart(fig)
@@ -1147,11 +1418,11 @@ def render_dashboard(
     period,
     water_goal,
     sleep_goal,
-    activity_goal
+    activity_goal,
+    profile
 ):
 
     st.markdown(
-
         """
         <div class="dashboard-heading">
             Take Care Of Your Health Easily
@@ -1161,21 +1432,15 @@ def render_dashboard(
             Your personal health and daily wellbeing dashboard
         </div>
         """,
-
         unsafe_allow_html=True
-
     )
-
-    # Apply selected date range.
 
     chart_df = filter_records_by_period(
         df,
         period
     )
 
-    # ========================================================
     # TOP ROW
-    # ========================================================
 
     col1, col2, col3 = st.columns(
         [1.05, 1.45, 0.9],
@@ -1187,6 +1452,13 @@ def render_dashboard(
         with st.container(border=True):
 
             blood_pressure_chart(chart_df)
+
+        with st.container(border=True):
+
+            hydration_chart(
+                df,
+                water_goal
+            )
 
     with col2:
 
@@ -1216,20 +1488,14 @@ def render_dashboard(
 
             weight_card(df)
 
-        st.write("")
-
-        with st.container(border=True):
-
-            hydration_chart(
-                df,
-                water_goal
-            )
+        bmi_card(
+            df,
+            profile["height_cm"]
+        )
 
     st.write("")
 
-    # ========================================================
     # BOTTOM ROW
-    # ========================================================
 
     col4, col5, col6 = st.columns(
         [1.05, 1.25, 1.1],
@@ -1241,15 +1507,26 @@ def render_dashboard(
         with st.container(border=True):
 
             st.markdown(
-
                 '<div class="section-heading">☀ Daily Wellbeing</div>',
-
                 unsafe_allow_html=True
-
             )
 
             st.write(
                 "Your most recent recorded daily measurements."
+            )
+
+            st.metric(
+                "Gender",
+                profile["gender"]
+            )
+
+            st.metric(
+                "Height",
+                (
+                    f"{profile['height_cm']:.1f} cm"
+                    if profile["height_cm"] is not None
+                    else "Not recorded"
+                )
             )
 
             if df.empty:
@@ -1260,9 +1537,7 @@ def render_dashboard(
 
             else:
 
-                # Sleep
-
-                sleep_value, sleep_date = latest_measurement(
+                sleep_value, _ = latest_measurement(
                     df,
                     "sleep_hours"
                 )
@@ -1276,9 +1551,7 @@ def render_dashboard(
                     )
                 )
 
-                # Activity
-
-                activity_value, activity_date = latest_measurement(
+                activity_value, _ = latest_measurement(
                     df,
                     "activity_minutes"
                 )
@@ -1292,9 +1565,7 @@ def render_dashboard(
                     )
                 )
 
-                # Water
-
-                water_value, water_date = latest_measurement(
+                water_value, _ = latest_measurement(
                     df,
                     "water_l"
                 )
@@ -1335,15 +1606,13 @@ def render_trends(
     df,
     water_goal,
     sleep_goal,
-    activity_goal
+    activity_goal,
+    profile
 ):
 
     st.markdown(
-
         '<div class="dashboard-heading">Health Analytics</div>',
-
         unsafe_allow_html=True
-
     )
 
     st.caption(
@@ -1352,73 +1621,58 @@ def render_trends(
 
     col1, col2 = st.columns(2)
 
-    # ========================================================
-    # LEFT COLUMN
-    # ========================================================
-
     with col1:
-
-        # Blood pressure
 
         with st.container(border=True):
 
             blood_pressure_chart(df)
 
-        # Weight
+        with st.container(border=True):
+
+            render_history_chart(
+                df,
+                "weight_kg",
+                "Weight History",
+                "Weight (kg)",
+                "line",
+                "kg"
+            )
 
         with st.container(border=True):
 
-            data = df.dropna(
+            bmi_data = df.dropna(
                 subset=["weight_kg"]
-            ).tail(20)
+            ).tail(20).copy()
 
-            if not data.empty:
+            if (
+                not bmi_data.empty
+                and profile["height_cm"] is not None
+            ):
 
-                fig = go.Figure(go.Scatter(
-
-                    x=chart_dates(data),
-
-                    y=data["weight_kg"],
-
-                    mode="lines+markers+text",
-
-                    text=[
-                        f"{v:.1f} kg"
-                        for v in data["weight_kg"]
-                    ],
-
-                    textposition="top center",
-
-                    line=dict(
-                        color="#1555d5",
-                        width=3
-                    ),
-
-                    marker=dict(
-                        size=8
-                    ),
-
-                    cliponaxis=False
-
-                ))
-
-                chart_style(
-                    fig,
-                    "Weight History",
-                    "Weight (kg)"
+                bmi_data["bmi"] = bmi_data["weight_kg"].apply(
+                    lambda weight: calculate_bmi(
+                        weight,
+                        profile["height_cm"]
+                    )
                 )
 
-                show_chart(fig)
+                render_history_chart(
+                    bmi_data,
+                    "bmi",
+                    "BMI History",
+                    "BMI",
+                    "line"
+                )
+
+                st.caption(
+                    "Historical BMI is calculated using your current saved height."
+                )
 
             else:
 
-                with st.container(border=True):
-
-                    st.info(
-                        "No weight measurements recorded yet."
-                    )
-
-        # Physical activity
+                st.info(
+                    "Enter your height and record your weight to see BMI history."
+                )
 
         with st.container(border=True):
 
@@ -1427,108 +1681,29 @@ def render_trends(
                 activity_goal
             )
 
-    # ========================================================
-    # RIGHT COLUMN
-    # ========================================================
-
     with col2:
 
-        # Heart rate
+        with st.container(border=True):
+
+            render_history_chart(
+                df,
+                "heart_rate_bpm",
+                "Heart Rate History",
+                "BPM",
+                "bar",
+                "bpm"
+            )
 
         with st.container(border=True):
 
-            data = df.dropna(
-                subset=["heart_rate_bpm"]
-            ).tail(20)
-
-            if not data.empty:
-
-                fig = go.Figure(go.Bar(
-
-                    x=chart_dates(data),
-
-                    y=data["heart_rate_bpm"],
-
-                    text=[
-                        f"{int(v)} bpm"
-                        for v in data["heart_rate_bpm"]
-                    ],
-
-                    textposition="outside",
-
-                    marker_color="#e69a45",
-
-                    cliponaxis=False
-
-                ))
-
-                chart_style(
-                    fig,
-                    "Heart Rate History",
-                    "BPM"
-                )
-
-                show_chart(fig)
-
-            else:
-
-                st.info(
-                    "No heart rate measurements recorded yet."
-                )
-
-        # Blood glucose
-
-        with st.container(border=True):
-
-            data = df.dropna(
-                subset=["glucose_mmol_l"]
-            ).tail(20)
-
-            if not data.empty:
-
-                fig = go.Figure(go.Scatter(
-
-                    x=chart_dates(data),
-
-                    y=data["glucose_mmol_l"],
-
-                    mode="lines+markers+text",
-
-                    text=[
-                        f"{v:.1f}"
-                        for v in data["glucose_mmol_l"]
-                    ],
-
-                    textposition="top center",
-
-                    line=dict(
-                        color="#8b6ac8",
-                        width=3
-                    ),
-
-                    marker=dict(
-                        size=8
-                    ),
-
-                    cliponaxis=False
-
-                ))
-
-                chart_style(
-                    fig,
-                    "Blood Glucose History",
-                    "mmol/L"
-                )
-
-                show_chart(fig)
-
-            else:
-
-                st.info(
-                    "No glucose measurements recorded yet."
-                )
-
-        # Sleep
+            render_history_chart(
+                df,
+                "glucose_mmol_l",
+                "Blood Glucose History",
+                "mmol/L",
+                "line",
+                "mmol/L"
+            )
 
         with st.container(border=True):
 
@@ -1536,8 +1711,6 @@ def render_trends(
                 df,
                 sleep_goal
             )
-
-        # Hydration
 
         with st.container(border=True):
 
@@ -1554,11 +1727,8 @@ def render_trends(
 def render_add_entry(db_path):
 
     st.markdown(
-
         '<div class="dashboard-heading">Add Health Measurements</div>',
-
         unsafe_allow_html=True
-
     )
 
     st.caption(
@@ -1573,182 +1743,117 @@ def render_add_entry(db_path):
         ):
 
             record_date = st.date_input(
-
                 "Date",
-
                 value=date.today(),
-
-                max_value=date.today()
-
+                max_value=date.today(),
+                key="health_entry_date"
             )
-
-            # =================================================
-            # BODY MEASUREMENTS
-            # =================================================
 
             st.subheader("Body Measurements")
 
             c1, c2, c3 = st.columns(3)
 
             weight = c1.number_input(
-
                 "Weight (kg)",
-
                 min_value=0.1,
                 max_value=500.0,
-
                 value=None,
-
                 step=0.1,
-
-                placeholder="Not recorded"
-
+                placeholder="Not recorded",
+                key="health_entry_weight"
             )
 
             systolic = c2.number_input(
-
                 "Systolic pressure (mmHg)",
-
                 min_value=1,
                 max_value=300,
-
                 value=None,
-
-                placeholder="Not recorded"
-
+                placeholder="Not recorded",
+                key="health_entry_systolic"
             )
 
             diastolic = c3.number_input(
-
                 "Diastolic pressure (mmHg)",
-
                 min_value=1,
                 max_value=200,
-
                 value=None,
-
-                placeholder="Not recorded"
-
+                placeholder="Not recorded",
+                key="health_entry_diastolic"
             )
-
-            # =================================================
-            # OTHER MEASUREMENTS
-            # =================================================
 
             st.subheader("Other Measurements")
 
             c4, c5, c6 = st.columns(3)
 
             heart_rate = c4.number_input(
-
                 "Heart rate (bpm)",
-
                 min_value=1,
                 max_value=250,
-
                 value=None,
-
-                placeholder="Not recorded"
-
+                placeholder="Not recorded",
+                key="health_entry_heart_rate"
             )
 
             glucose = c5.number_input(
-
                 "Blood glucose (mmol/L)",
-
                 min_value=0.1,
                 max_value=60.0,
-
                 value=None,
-
                 step=0.1,
-
-                placeholder="Not recorded"
-
+                placeholder="Not recorded",
+                key="health_entry_glucose"
             )
 
             water = c6.number_input(
-
                 "Water intake (L)",
-
                 min_value=0.0,
                 max_value=20.0,
-
                 value=None,
-
                 step=0.1,
-
-                placeholder="Not recorded"
-
+                placeholder="Not recorded",
+                key="health_entry_water"
             )
-
-            # =================================================
-            # DAILY WELLBEING
-            # =================================================
 
             st.subheader("Daily Wellbeing")
 
             c7, c8 = st.columns(2)
 
             sleep = c7.number_input(
-
                 "Sleep duration (hours)",
-
                 min_value=0.0,
                 max_value=24.0,
-
                 value=None,
-
                 step=0.5,
-
-                placeholder="Not recorded"
-
+                placeholder="Not recorded",
+                key="health_entry_sleep"
             )
 
             activity = c8.number_input(
-
                 "Physical activity (minutes)",
-
                 min_value=0,
                 max_value=1440,
-
                 value=None,
-
                 step=5,
-
-                placeholder="Not recorded"
-
+                placeholder="Not recorded",
+                key="health_entry_activity"
             )
 
             notes = st.text_area(
-
                 "Additional notes",
-
                 max_chars=500,
-
-                placeholder="Add any relevant notes..."
-
+                placeholder="Add any relevant notes...",
+                key="health_entry_notes"
             )
 
             submitted = st.form_submit_button(
-
                 "Save Health Record",
-
                 type="primary",
-
                 use_container_width=True
-
             )
-
-        # =====================================================
-        # VALIDATION AND SAVING
-        # =====================================================
 
         if submitted:
 
             errors = []
-
-            # Blood pressure validation.
 
             if (
                 (systolic is None)
@@ -1769,10 +1874,7 @@ def render_add_entry(db_path):
                     "Systolic pressure must be greater than diastolic pressure."
                 )
 
-            # Require at least one measurement.
-
             measurements = [
-
                 weight,
                 systolic,
                 diastolic,
@@ -1781,7 +1883,6 @@ def render_add_entry(db_path):
                 water,
                 sleep,
                 activity
-
             ]
 
             if all(
@@ -1796,7 +1897,6 @@ def render_add_entry(db_path):
             if errors:
 
                 for error in errors:
-
                     st.error(error)
 
             else:
@@ -1806,19 +1906,13 @@ def render_add_entry(db_path):
                     "date": record_date,
 
                     "weight": weight,
-
                     "systolic": systolic,
-
                     "diastolic": diastolic,
-
                     "heart_rate": heart_rate,
-
                     "glucose": glucose,
 
                     "water": water,
-
                     "sleep": sleep,
-
                     "activity": activity,
 
                     "notes": notes
@@ -1849,14 +1943,11 @@ def render_add_entry(db_path):
 # HEALTH HISTORY
 # ============================================================
 
-def render_history(df, db_path):
+def render_history(df, db_path, profile):
 
     st.markdown(
-
         '<div class="dashboard-heading">Health History</div>',
-
         unsafe_allow_html=True
-
     )
 
     if df.empty:
@@ -1868,16 +1959,16 @@ def render_history(df, db_path):
         return
 
     history = df.sort_values(
-
         ["record_date", "id"],
-
         ascending=False
-
     ).copy()
 
-    # ========================================================
-    # DATE FILTER
-    # ========================================================
+    history["bmi"] = history["weight_kg"].apply(
+        lambda weight: calculate_bmi(
+            weight,
+            profile["height_cm"]
+        )
+    )
 
     valid_dates = pd.to_datetime(
         history["record_date"],
@@ -1895,38 +1986,24 @@ def render_history(df, db_path):
     minimum_date = valid_dates.min().date()
     maximum_date = valid_dates.max().date()
 
-    st.markdown(
-        "### Filter records"
-    )
+    st.markdown("### Filter records")
 
     c1, c2 = st.columns(2)
 
     start_date = c1.date_input(
-
         "From",
-
         value=minimum_date,
-
         min_value=minimum_date,
-
         max_value=maximum_date,
-
         key="history_start_date"
-
     )
 
     end_date = c2.date_input(
-
         "To",
-
         value=maximum_date,
-
         min_value=minimum_date,
-
         max_value=maximum_date,
-
         key="history_end_date"
-
     )
 
     if start_date > end_date:
@@ -1947,46 +2024,27 @@ def render_history(df, db_path):
         (parsed_dates <= end_date)
     ].copy()
 
-    # ========================================================
-    # RENAME COLUMNS
-    # ========================================================
-
     history = history.rename(columns={
 
         "id": "ID",
-
         "record_date": "Date",
-
         "weight_kg": "Weight (kg)",
-
+        "bmi": "BMI",
         "systolic_bp": "Systolic (mmHg)",
-
         "diastolic_bp": "Diastolic (mmHg)",
-
         "heart_rate_bpm": "Heart Rate (bpm)",
-
         "glucose_mmol_l": "Glucose (mmol/L)",
-
         "water_l": "Water (L)",
-
         "sleep_hours": "Sleep (hours)",
-
         "activity_minutes": "Activity (minutes)",
-
         "notes": "Notes"
 
     })
 
-    # ========================================================
-    # SEARCH
-    # ========================================================
-
     search = st.text_input(
-
         "Search health records",
-
-        placeholder="Search notes or measurements..."
-
+        placeholder="Search notes or measurements...",
+        key="health_history_search"
     )
 
     columns = [
@@ -1994,6 +2052,7 @@ def render_history(df, db_path):
         "ID",
         "Date",
         "Weight (kg)",
+        "BMI",
         "Systolic (mmHg)",
         "Diastolic (mmHg)",
         "Heart Rate (bpm)",
@@ -2007,9 +2066,7 @@ def render_history(df, db_path):
 
     if search:
 
-        mask = history[columns].astype(
-            str
-        ).apply(
+        mask = history[columns].astype(str).apply(
 
             lambda column: column.str.contains(
                 search,
@@ -2022,10 +2079,6 @@ def render_history(df, db_path):
 
         history = history[mask]
 
-    # ========================================================
-    # RECORD TABLE
-    # ========================================================
-
     st.markdown("### Recorded Measurements")
 
     if history.empty:
@@ -2037,13 +2090,9 @@ def render_history(df, db_path):
     else:
 
         st.dataframe(
-
             history[columns],
-
             hide_index=True,
-
             use_container_width=True
-
         )
 
         st.download_button(
@@ -2060,24 +2109,14 @@ def render_history(df, db_path):
 
         )
 
-    # ========================================================
-    # DELETE RECORD
-    # ========================================================
-
     st.divider()
 
     with st.expander("Delete a health record"):
 
-        record_ids = df["id"].tolist()
-
         record_id = st.selectbox(
-
             "Select record ID",
-
-            options=record_ids,
-
+            options=df["id"].tolist(),
             key="delete_record_id"
-
         )
 
         confirm = st.checkbox(
@@ -2086,13 +2125,9 @@ def render_history(df, db_path):
         )
 
         if st.button(
-
             "Delete record",
-
             disabled=not confirm,
-
             key="delete_health_record"
-
         ):
 
             try:
@@ -2121,17 +2156,23 @@ def render_history(df, db_path):
 
 def render_health_tracker(db_path=DB_PATH):
 
-    # Initialize database.
+    # INITIALIZE DATABASE
 
     initialize_database(db_path)
 
-    # Apply CSS.
+    # DESIGN
 
     apply_design()
 
-    # Load health records.
+    # LOAD DATA
 
     df = load_records(db_path)
+
+    profile = load_profile(db_path)
+
+    # INITIALIZE SESSION STATE
+
+    initialize_session_state(profile)
 
     # ========================================================
     # SIDEBAR
@@ -2140,7 +2181,6 @@ def render_health_tracker(db_path=DB_PATH):
     with st.sidebar:
 
         st.markdown(
-
             """
             <h1 style="font-size:28px;">✣</h1>
 
@@ -2152,9 +2192,7 @@ def render_health_tracker(db_path=DB_PATH):
                 PERSONAL WELLBEING
             </p>
             """,
-
             unsafe_allow_html=True
-
         )
 
         st.divider()
@@ -2164,26 +2202,95 @@ def render_health_tracker(db_path=DB_PATH):
             "NAVIGATION",
 
             [
-
                 "Overview",
-
                 "Add measurements",
-
                 "Health trends",
-
                 "Health history"
-
             ],
 
-            index=0
+            key="health_page"
 
         )
+
+        # PERSONAL PROFILE
 
         st.divider()
 
-        st.markdown(
-            "### Personal Goals"
-        )
+        st.markdown("### Personal Profile")
+
+        with st.form("personal_profile_form"):
+
+            gender_options = [
+                "Prefer not to say",
+                "Male",
+                "Female",
+                "Other"
+            ]
+
+            gender = st.selectbox(
+
+                "Gender",
+
+                gender_options,
+
+                key="health_profile_gender"
+
+            )
+
+            height_cm = st.number_input(
+
+                "Height (cm)",
+
+                min_value=50.0,
+                max_value=250.0,
+
+                step=0.5,
+
+                placeholder="Enter your height",
+
+                key="health_profile_height_cm"
+
+            )
+
+            save_profile_button = st.form_submit_button(
+
+                "Save Profile",
+
+                use_container_width=True
+
+            )
+
+            if save_profile_button:
+
+                try:
+
+                    save_profile(
+
+                        st.session_state["health_profile_gender"],
+
+                        st.session_state["health_profile_height_cm"],
+
+                        db_path
+
+                    )
+
+                    st.success(
+                        "Profile saved successfully."
+                    )
+
+                    st.rerun()
+
+                except sqlite3.Error as error:
+
+                    st.error(
+                        f"Database error: {error}"
+                    )
+
+        # PERSONAL GOALS
+
+        st.divider()
+
+        st.markdown("### Personal Goals")
 
         water_goal = st.number_input(
 
@@ -2191,8 +2298,6 @@ def render_health_tracker(db_path=DB_PATH):
 
             min_value=0.1,
             max_value=10.0,
-
-            value=2.0,
 
             step=0.1,
 
@@ -2207,8 +2312,6 @@ def render_health_tracker(db_path=DB_PATH):
             min_value=0.5,
             max_value=24.0,
 
-            value=8.0,
-
             step=0.5,
 
             key="sleep_goal"
@@ -2222,8 +2325,6 @@ def render_health_tracker(db_path=DB_PATH):
             min_value=1,
             max_value=1440,
 
-            value=30,
-
             step=5,
 
             key="activity_goal"
@@ -2232,37 +2333,27 @@ def render_health_tracker(db_path=DB_PATH):
 
         st.divider()
 
-        st.caption(
-            "HealthSpace Prototype"
-        )
+        st.caption("HealthSpace Prototype")
 
     # ========================================================
     # MAIN HEADER
     # ========================================================
 
     header_left, header_right = st.columns(
-
         [2.5, 1],
-
         vertical_alignment="center"
-
     )
 
     with header_left:
 
         st.markdown(
-
             f"""
             <div style="font-size:13px;color:#7d8795;">
                 HOME / {page.upper()}
             </div>
             """,
-
             unsafe_allow_html=True
-
         )
-
-    # Period selector only appears on analytical pages.
 
     period = "All records"
 
@@ -2275,18 +2366,13 @@ def render_health_tracker(db_path=DB_PATH):
                 "Dashboard period",
 
                 [
-
                     "Last 7 days",
-
                     "Last 30 days",
-
                     "Last 90 days",
-
                     "All records"
-
                 ],
 
-                index=1,
+                key="health_period",
 
                 label_visibility="collapsed"
 
@@ -2310,7 +2396,9 @@ def render_health_tracker(db_path=DB_PATH):
 
             sleep_goal,
 
-            activity_goal
+            activity_goal,
+
+            profile
 
         )
 
@@ -2333,7 +2421,9 @@ def render_health_tracker(db_path=DB_PATH):
 
             sleep_goal,
 
-            activity_goal
+            activity_goal,
+
+            profile
 
         )
 
@@ -2341,8 +2431,6 @@ def render_health_tracker(db_path=DB_PATH):
 
         render_history(
             df,
-            db_path
+            db_path,
+            profile
         )
-
-
-
