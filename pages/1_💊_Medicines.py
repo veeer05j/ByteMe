@@ -4,6 +4,7 @@ import streamlit as st
 import medicine_reminder
 from reminder_sound import play_reminder_sound
 
+
 st.set_page_config(page_title="Medicines", page_icon="💊")
 st.title("💊 Medicine Reminders")
 
@@ -31,7 +32,6 @@ def show_popup(messages):
         st.markdown(f"### {m}")
 
     if st.button("✅ OK, I'll take it", use_container_width=True):
-
         st.rerun()
 
 
@@ -43,7 +43,10 @@ st.subheader("Add a Medicine")
 with st.form("add_med_form", clear_on_submit=True):
 
     med_name = st.text_input("Medicine Name (e.g. Aspirin)")
+
     med_time = st.time_input("Time to take")
+
+    repeat_daily = st.checkbox("🔁 Repeat every day")
 
     if st.form_submit_button("Add Medicine"):
 
@@ -53,10 +56,15 @@ with st.form("add_med_form", clear_on_submit=True):
 
             medicine_reminder.add_medicine(
                 med_name.strip(),
-                time_str
+                time_str,
+                repeat_daily
             )
 
-            st.success(f"Added {med_name} at {time_str}")
+            frequency = "Daily" if repeat_daily else "One-time"
+
+            st.success(
+                f"Added {med_name} at {time_str} ({frequency})"
+            )
 
         else:
             st.error("Please enter a medicine name.")
@@ -81,7 +89,13 @@ else:
         c1, c2, c3 = st.columns([2, 2, 1])
 
         c1.write(f"**{med['medicine']}**")
+
         c2.write(f"⏰ {med['time']}")
+
+        if med["repeat_daily"]:
+            c2.caption("🔁 Daily")
+        else:
+            c2.caption("One-time")
 
         if c3.button("❌ Remove", key=f"del_{i}"):
 
@@ -113,6 +127,7 @@ def checker():
     if new:
 
         st.session_state.pending_popups.extend(new)
+
         st.session_state.history.extend(new)
 
         st.rerun()
@@ -128,7 +143,7 @@ checker()
 
 
 # ---------------------------------------------------------
-# Alert history
+# 4. Alert history
 # ---------------------------------------------------------
 if st.session_state.history:
 
@@ -139,12 +154,14 @@ if st.session_state.history:
 
 
 # ---------------------------------------------------------
-# 4. Display popup
+# 5. Display popup
 # ---------------------------------------------------------
 if st.session_state.pending_popups:
 
     msgs = st.session_state.pending_popups
 
     st.session_state.pending_popups = []
+
     play_reminder_sound()
+
     show_popup(msgs)
