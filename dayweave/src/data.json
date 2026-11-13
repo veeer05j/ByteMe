@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "name": "Victoria Hospital",
+    "type": "Hospital",
+    "latitude": -20.1670,
+    "longitude": 57.5015,
+    "opening": "24/7",
+    "closing": "24/7",
+    "address": "Candos, Quatre Bornes"
+  },
+  {
+    "id": 2,
+    "name": "Jeetoo Hospital",
+    "type": "Hospital",
+    "latitude": -20.1618,
+    "longitude": 57.5024,
+    "opening": "24/7",
+    "closing": "24/7",
+    "address": "Port Louis"
+  },
+  {
+    "id": 3,
+    "name": "C-Care Clinic Moka",
+    "type": "Clinic",
+    "latitude": -20.2188,
+    "longitude": 57.4961,
+    "opening": "08:00",
+    "closing": "18:00",
+    "address": "Moka"
+  }
+]
