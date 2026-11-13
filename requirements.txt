@@ -1,3 +1,7 @@
 streamlit
 groq
 python-dotenv
+bcrypt
+pyotp
+qrcode[pil]
+cryptography
