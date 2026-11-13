@@ -1,4 +1,4 @@
-from playsound import playsound
+from winsound import winsound
 
 def play_reminder_sound():
-    playsound("reminder_sound.mp3")
+    winsound.PlaySound("reminder_sound.wav", winsound.SND_FILENAME)
