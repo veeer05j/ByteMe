@@ -90,11 +90,6 @@ section[data-testid="stSidebar"] {
 
 # Sidebar
 with st.sidebar:
-    st.title("💻 FitCoach")
-    st.caption("Your personal fitness companion")
-
-    st.divider()
-
     st.subheader("Your coach")
 
     st.write("🏋️ Workout planning")
