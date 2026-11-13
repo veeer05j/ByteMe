@@ -44,8 +44,8 @@ const clinicsData = rawData.features.map((feature, index) => {
   };
 });
 
-// 4. Accept setActiveTab and addTask from App.jsx
-export default function MapView({ setActiveTab, addTask }) {
+// 4. Accept setActiveTab from App.jsx
+export default function MapView({ setActiveTab }) {
   const [userLocation, setUserLocation] = useState(null);
   const [statusMessage, setStatusMessage] = useState("");
   const [isArrived, setIsArrived] = useState(false);
@@ -159,24 +159,11 @@ export default function MapView({ setActiveTab, addTask }) {
                   <div style={{ textAlign: "center", minWidth: "180px", paddingBottom: "5px" }}>
                     <strong style={{ display: "block", fontSize: "15px", color: "#1e3a8a", marginBottom: "2px" }}>{clinic.name}</strong>
                     <span style={{ fontSize: "12px", color: "#6b7280", textTransform: "capitalize" }}>{clinic.type}</span>
-                    
-                    {/* Appointments / Booking Button */}
-                    <button 
-                      onClick={() => {
-                        if(addTask) {
-                          addTask(`Appointment at ${clinic.name}`);
-                          alert(`✅ Appointment successfully added to your routine!`);
-                        }
-                      }}
-                      style={{ marginTop: "10px", width: "100%", backgroundColor: "#16a34a", color: "white", padding: "8px", borderRadius: "6px", border: "none", fontWeight: "bold", cursor: "pointer", fontSize: "13px" }}
-                    >
-                      📅 Book Appointment
-                    </button>
 
                     {/* GPS Check Button */}
                     <button 
                       onClick={() => checkLocationToClinic(clinic)}
-                      style={{ marginTop: "6px", width: "100%", backgroundColor: "#2563eb", color: "white", padding: "8px", borderRadius: "6px", border: "none", fontWeight: "bold", cursor: "pointer", fontSize: "13px" }}
+                      style={{ marginTop: "10px", width: "100%", backgroundColor: "#2563eb", color: "white", padding: "8px", borderRadius: "6px", border: "none", fontWeight: "bold", cursor: "pointer", fontSize: "13px" }}
                     >
                       📍 Check My Location
                     </button>
