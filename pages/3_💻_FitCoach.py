@@ -10,124 +10,183 @@ load_dotenv()
 st.set_page_config(
     page_title="FitCoach - AI Fitness Coach",
     page_icon="💻",
-    layout="centered"
+    layout="centered",
+    initial_sidebar_state="expanded"
 )
 
 # Groq API configuration
 api_key = os.getenv("GROQ_API_KEY")
 
-# AI Coach personality
+# ==========================================
+# AI COACH PERSONALITY & GUIDELINES
+# ==========================================
 SYSTEM_PROMPT = """
-You are FitCoach, a professional and friendly AI
-fitness and lifestyle coach.
+You are FitCoach, a professional, highly structured, and friendly AI fitness and lifestyle coach.
 
-Your responsibilities include:
+YOUR RESPONSIBILITIES:
+1. FITNESS: Create personalised workout routines, explain exercises, and provide recovery advice.
+2. NUTRITION: Explain calories/macros, suggest balanced meals, and encourage healthy eating.
+3. LIFESTYLE: Improve sleep, hydration, discipline, and daily routines.
+4. COACHING: Understand user goals, ask clarifying questions, and break large goals into actionable steps.
 
-1. FITNESS
-- Create personalised workout routines.
-- Help users build muscle and strength.
-- Explain exercises and training techniques.
-- Provide recovery and rest advice.
+FORMATTING GUIDELINES (CRITICAL):
+- You must ALWAYS use clean Markdown formatting.
+- Use **bolding** for key terms (e.g., **Protein**, **Squats**).
+- Use bullet points for lists and numbered lists for step-by-step routines.
+- Keep paragraphs short and easy to read on mobile devices.
+- Do not use overly long, generic motivational speeches. Be direct and actionable.
 
-2. NUTRITION
-- Explain calories and macronutrients.
-- Suggest balanced meal ideas.
-- Help users understand protein, carbs and fats.
-- Encourage healthy eating habits.
+SAFETY & BOUNDARIES (STRICT):
+- You are NOT a medical professional. You cannot diagnose conditions.
+- NEVER recommend steroids, extreme starvation diets, or dangerous practices.
+- Do not encourage exercising through sharp or severe pain.
+- If a user mentions chest pain, fainting, or severe breathing issues, immediately advise them to seek urgent medical assistance.
+- For minor injuries, recommend consulting a physiotherapist or doctor.
 
-3. LIFESTYLE
-- Help users improve sleep and hydration.
-- Encourage discipline and consistency.
-- Help users develop healthy routines.
-- Support personal development.
-
-4. PERSONAL COACHING
-- Understand each user's fitness goals.
-- Give realistic and personalised advice.
-- Ask questions when necessary.
-- Break large goals into smaller steps.
-
-PERSONALITY:
-- Friendly and motivating.
-- Professional but conversational.
-- Easy to understand.
-- Avoid generic motivational speeches.
-- Never judge users based on their appearance.
-
-SAFETY:
-- You are not a medical professional.
-- Never diagnose medical conditions.
-- Never recommend steroids or dangerous diets.
-- Do not encourage exercising through serious pain.
-- Recommend professional medical advice when appropriate.
-- Recommend urgent medical assistance for chest pain,
-  fainting or severe breathing difficulties.
-
-Your mission is to help users become healthier,
-stronger and more consistent.
+Your mission is to help users become healthier, stronger, and more consistent through structured, safe, and friendly advice.
 """
 
-# Main design
+# ==========================================
+# ENHANCED UI DESIGN (CSS)
+# ==========================================
 st.markdown("""
 <style>
-.stApp {
-    background-color: #f4f7f4;
-}
+    /* Force light background and dark text for main app */
+    .stApp {
+        background-color: #f8fafc !important;
+    }
+    
+    /* Force all main text to be dark */
+    .stApp p, .stApp h1, .stApp h2, .stApp h3, .stApp h4, .stApp h5, .stApp h6, .stApp li, .stApp span {
+        color: #1e293b !important;
+    }
 
-h1 {
-    color: #176b50;
-}
+    /* Gradient Title */
+    .hero-title {
+        background: -webkit-linear-gradient(45deg, #176b50, #2ecc71);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent !important;
+        font-weight: 800;
+        font-size: 3rem;
+        margin-bottom: 0;
+        text-align: center;
+    }
+    
+    .hero-subtitle {
+        text-align: center;
+        color: #475569 !important;
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+    }
 
-.stChatMessage {
-    border-radius: 12px;
-}
+    /* Chat Message Bubbles */
+    [data-testid="stChatMessage"] {
+        background-color: #ffffff !important;
+        border-radius: 15px;
+        padding: 1rem;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        margin-bottom: 1rem;
+        border: 1px solid #e2e8f0;
+    }
+    
+    /* User Message Styling */
+    [data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) {
+        background-color: #eaf2ec !important;
+        border: 1px solid #c8e6c9;
+    }
 
-section[data-testid="stSidebar"] {
-    background-color: #eaf2ec;
-}
+    /* Ensure text inside chat bubbles is dark */
+    [data-testid="stChatMessage"] * {
+        color: #0f172a !important;
+    }
+
+    /* Sidebar Styling */
+    [data-testid="stSidebar"] {
+        background-color: #ffffff !important;
+        border-right: 1px solid #e2e8f0;
+    }
+    
+    [data-testid="stSidebar"] * {
+        color: #1e293b !important;
+    }
+    
+    /* Suggestion Buttons */
+    .stButton > button {
+        background-color: #ffffff !important;
+        border: 1px solid #176b50 !important;
+        color: #176b50 !important;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        font-weight: 600;
+    }
+    
+    /* Button Hover */
+    .stButton > button:hover {
+        background-color: #176b50 !important;
+        color: #ffffff !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
-# Sidebar
+# ==========================================
+# SIDEBAR
+# ==========================================
 with st.sidebar:
-    st.subheader("Your coach")
-
-    st.write("🏋️ Workout planning")
-    st.write("🥗 Nutrition advice")
-    st.write("💤 Healthy lifestyle")
-    st.write("🎯 Personal goals")
-
+    st.title("🏋️ FitCoach Dashboard")
+    st.caption("Your AI-powered health companion")
+    
     st.divider()
-
-    if st.button("🗑️ Clear conversation"):
-        st.session_state.messages = []
+    
+    st.subheader("🎯 What I can do:")
+    st.write("🏋️ **Workout planning**")
+    st.write("🥗 **Nutrition & Macros**")
+    st.write("💤 **Sleep & Recovery**")
+    st.write("🧠 **Habit building**")
+    
+    st.divider()
+    
+    # Download Chat History Feature
+    if "messages" in st.session_state and len(st.session_state.messages) > 1:
+        chat_history = ""
+        for msg in st.session_state.messages:
+            role = "You" if msg["role"] == "user" else "FitCoach"
+            chat_history += f"**{role}:**\n{msg['content']}\n\n---\n\n"
+        
+        st.download_button(
+            label="📥 Save Chat History",
+            data=chat_history,
+            file_name="fitcoach_chat.md",
+            mime="text/markdown",
+            use_container_width=True
+        )
+    
+    if st.button("🗑️ Clear Conversation", use_container_width=True):
+        st.session_state.messages = [
+            {
+                "role": "assistant",
+                "content": "Hello again! I've cleared our chat. What fitness goal are we focusing on today? 💪"
+            }
+        ]
+        if "pending_prompt" in st.session_state:
+            del st.session_state.pending_prompt
         st.rerun()
 
-# Main heading
-st.title("💻 FitCoach")
+# ==========================================
+# MAIN PAGE UI
+# ==========================================
+st.markdown('<h1 class="hero-title">FitCoach 💻</h1>', unsafe_allow_html=True)
+st.markdown('<p class="hero-subtitle">Your personal AI fitness and lifestyle coach.</p>', unsafe_allow_html=True)
 
-st.markdown(
-    "### Your personal AI fitness and lifestyle coach"
-)
-
-st.write(
-    "Let's build healthier habits, improve your fitness "
-    "and work towards your goals together."
-)
-
-st.divider()
-
-# Initialise conversation history
+# Initialize conversation history
 if "messages" not in st.session_state:
     st.session_state.messages = [
         {
             "role": "assistant",
             "content": (
-                "Hello! Welcome to FitCoach! 💻\n\n"
-                "I'm your personal fitness and lifestyle coach. "
-                "I can help you with workout plans, nutrition, "
-                "muscle building and healthy habits.\n\n"
-                "What's your main fitness goal?"
+                "Hello! Welcome to FitCoach! 💪\n\n"
+                "I'm here to help you with workout plans, nutrition, "
+                "muscle building, and healthy habits.\n\n"
+                "**What is your main fitness goal right now?**"
             )
         }
     ]
@@ -137,63 +196,82 @@ for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-# Chat input
+# ==========================================
+# QUICK SUGGESTIONS
+# ==========================================
+if len(st.session_state.messages) == 1:
+    st.write("Not sure where to start? Try one of these:")
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        if st.button("🏋️ Create a 3-Day Workout", use_container_width=True):
+            st.session_state.pending_prompt = "Can you create a 3-day beginner workout routine for me?"
+            st.rerun()
+            
+    with col2:
+        if st.button("🥗 High Protein Meals", use_container_width=True):
+            st.session_state.pending_prompt = "Give me 3 high-protein meal ideas for weight loss."
+            st.rerun()
+            
+    with col3:
+        if st.button("😴 Better Sleep Tips", use_container_width=True):
+            st.session_state.pending_prompt = "How can I improve my sleep quality and recovery?"
+            st.rerun()
+
+# ==========================================
+# CHAT INPUT & AI LOGIC
+# ==========================================
 user_prompt = st.chat_input("Ask your fitness coach anything...")
 
-if user_prompt:
+# Check if the user typed something OR if a suggestion button was clicked
+active_prompt = user_prompt or st.session_state.get("pending_prompt")
 
+if active_prompt:
     if not api_key:
-        st.error("Groq API key missing. Please check your .env file.")
-
+        st.error("⚠️ Groq API key missing. Please check your .env file.")
     else:
-
-        # Add user message
-        st.session_state.messages.append({
-            "role": "user",
-            "content": user_prompt
-        })
-
+        # Add user message to history
+        st.session_state.messages.append({"role": "user", "content": active_prompt})
+        
+        # Clear the pending prompt so it doesn't run again on the next rerun
+        if "pending_prompt" in st.session_state:
+            del st.session_state.pending_prompt
+            
         with st.chat_message("user"):
-            st.markdown(user_prompt)
+            st.markdown(active_prompt)
 
         # Generate AI response
         with st.chat_message("assistant"):
-
-            with st.spinner("FitCoach is thinking..."):
-
+            with st.spinner("FitCoach is analyzing your request..."):
                 try:
-
                     client = Groq(api_key=api_key)
-
+                    
                     completion = client.chat.completions.create(
                         model="openai/gpt-oss-20b",
                         messages=[
-                            {
-                                "role": "system",
-                                "content": SYSTEM_PROMPT
-                            },
+                            {"role": "system", "content": SYSTEM_PROMPT},
                             *st.session_state.messages[-12:]
                         ],
-                        max_completion_tokens=1200
+                        max_completion_tokens=1500,
+                        temperature=0.7,
                     )
 
-                    ai_response = (
-                        completion.choices[0].message.content
-                    )
+                    ai_response = completion.choices[0].message.content
 
                     if not ai_response:
                         raise ValueError("The AI returned an empty response.")
 
+                    # Display the response
                     st.markdown(ai_response)
-
-                    # Save assistant response
+                    
+                    # Save assistant response to history
                     st.session_state.messages.append({
                         "role": "assistant",
                         "content": ai_response
                     })
+                    
+                    # Rerun to ensure the chat history renders correctly
+                    st.rerun()
 
                 except Exception as error:
-
-                    st.error(
-                        f"Something went wrong: {error}"
-                    )
+                    st.error(f"Oops, something went wrong: {error}")
