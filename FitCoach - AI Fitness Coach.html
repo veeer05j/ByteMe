@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#176b50">
+  <title>FitCoach - AI Fitness Coach</title>
+  <style>
+    :root {
+      --green: #176b50;
+      --green-dark: #11533e;
+      --green-light: #eaf2ec;
+      --page: #f8fafc;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --white: #ffffff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--page);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    button, textarea { font: inherit; }
+    button { cursor: pointer; }
+
+    .app-header {
+      padding: 18px 24px;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-inner {
+      width: min(1200px, 100%);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--green);
+    }
+
+    .header-caption { margin: 4px 0 0; color: var(--muted); font-size: .9rem; }
+
+    .app-layout {
+      width: min(1200px, 100%);
+      margin: 26px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 270px minmax(0, 1fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .sidebar, .chat-panel {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, .05);
+    }
+
+    .sidebar { padding: 20px; }
+    .sidebar h2 { margin: 0 0 6px; font-size: 1.15rem; }
+    .sidebar-caption { margin: 0 0 18px; color: var(--muted); font-size: .9rem; }
+    .sidebar h3 { margin: 18px 0 10px; font-size: .98rem; }
+    .feature-list { list-style: none; margin: 0; padding: 0; }
+    .feature-list li { padding: 8px 0; border-bottom: 1px solid #f1f5f9; font-size: .94rem; }
+    .feature-list li:last-child { border-bottom: 0; }
+    .sidebar-actions { display: grid; gap: 9px; margin-top: 18px; }
+
+    .action-button {
+      width: 100%;
+      min-height: 42px;
+      padding: 10px 12px;
+      border: 1px solid var(--green);
+      border-radius: 9px;
+      background: #fff;
+      color: var(--green);
+      font-weight: 700;
+      transition: background .2s, color .2s;
+    }
+
+    .action-button:hover { background: var(--green); color: #fff; }
+    .privacy-note { margin: 16px 0 0; color: var(--muted); font-size: .82rem; line-height: 1.5; }
+
+    .chat-panel { min-height: 76vh; display: flex; flex-direction: column; overflow: hidden; }
+    .hero { padding: 25px 24px 18px; text-align: center; border-bottom: 1px solid #eef2f6; }
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 800;
+      background: linear-gradient(45deg, #176b50, #2ecc71);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .hero p { margin: 7px 0 0; color: #475569; }
+
+    .messages {
+      flex: 1;
+      padding: 22px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .message {
+      max-width: 92%;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      background: #fff;
+      box-shadow: 0 3px 6px rgba(0,0,0,.04);
+      overflow-wrap: anywhere;
+    }
+
+    .message.user {
+      align-self: flex-end;
+      background: var(--green-light);
+      border-color: #c8e6c9;
+    }
+
+    .message.assistant { align-self: flex-start; }
+    .message-label { margin-bottom: 7px; color: var(--green); font-size: .78rem; font-weight: 800; }
+    .message-content { line-height: 1.6; font-size: .96rem; }
+    .message-content p { margin: 0 0 10px; }
+    .message-content p:last-child { margin-bottom: 0; }
+    .message-content h1, .message-content h2, .message-content h3 { margin: 12px 0 7px; font-size: 1.05rem; }
+    .message-content ul, .message-content ol { margin: 6px 0 10px; padding-left: 23px; }
+    .message-content li { margin: 4px 0; }
+    .message-content code { padding: 2px 5px; background: #f1f5f9; border-radius: 4px; }
+    .message-content hr { border: 0; border-top: 1px solid var(--border); margin: 10px 0; }
+
+    .suggestions { padding: 0 24px 20px; }
+    .suggestions p { margin: 0 0 11px; color: #475569; font-weight: 600; }
+    .suggestion-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .suggestion-button {
+      min-height: 54px;
+      padding: 10px;
+      border: 1px solid var(--green);
+      border-radius: 9px;
+      background: #fff;
+      color: var(--green);
+      font-weight: 700;
+      line-height: 1.35;
+    }
+    .suggestion-button:hover { color: #fff; background: var(--green); }
+
+    .thinking {
+      margin: 0 24px 18px;
+      padding: 12px 14px;
+      color: var(--green-dark);
+      background: #edf8f1;
+      border-radius: 10px;
+      font-size: .92rem;
+    }
+
+    .composer {
+      padding: 16px 20px 18px;
+      border-top: 1px solid var(--border);
+      background: #fff;
+    }
+    .composer-row { display: flex; align-items: flex-end; gap: 10px; }
+    #userInput {
+      flex: 1;
+      min-height: 48px;
+      max-height: 150px;
+      resize: vertical;
+      padding: 12px 13px;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      outline: none;
+      color: var(--text);
+      background: #fff;
+    }
+    #userInput:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(23,107,80,.1); }
+    #sendButton {
+      min-width: 88px;
+      min-height: 48px;
+      padding: 10px 16px;
+      border: 0;
+      border-radius: 10px;
+      color: #fff;
+      background: var(--green);
+      font-weight: 700;
+    }
+    #sendButton:hover { background: var(--green-dark); }
+    #sendButton:disabled { opacity: .55; cursor: not-allowed; }
+    .composer-options { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 10px; color: var(--muted); font-size: .83rem; }
+    .voice-option { display: inline-flex; gap: 7px; align-items: center; }
+    .hidden { display: none !important; }
+    .error-message { color: #991b1b; background: #fef2f2; border: 1px solid #fecaca; padding: 12px; border-radius: 9px; }
+
+    @media (max-width: 850px) {
+      .app-layout { grid-template-columns: 1fr; margin-top: 16px; }
+      .sidebar { order: 2; }
+      .chat-panel { min-height: 70vh; order: 1; }
+      .sidebar-actions { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 560px) {
+      .app-header { padding: 14px 16px; }
+      .app-layout { padding: 0 10px; gap: 13px; }
+      .hero { padding: 21px 14px 15px; }
+      .messages { padding: 16px 12px; }
+      .message { max-width: 97%; padding: 12px 13px; }
+      .suggestions { padding: 0 12px 16px; }
+      .suggestion-grid { grid-template-columns: 1fr; }
+      .suggestion-button { min-height: 43px; }
+      .composer { padding: 12px; }
+      .composer-row { gap: 7px; }
+      #sendButton { min-width: 72px; padding: 9px; }
+      .composer-options { align-items: flex-start; flex-direction: column; }
+      .sidebar { padding: 17px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-inner">
+      <div>
+        <p class="brand">💻 FitCoach</p>
+        <p class="header-caption">Your AI-powered health companion</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-layout">
+    <aside class="sidebar">
+      <h2>🏋️ FitCoach Dashboard</h2>
+      <p class="sidebar-caption">Your personal fitness assistant</p>
+      <h3>🎯 What I can do:</h3>
+      <ul class="feature-list">
+        <li>🏋️ Workout planning</li>
+        <li>🥗 Nutrition &amp; macros</li>
+        <li>💤 Sleep &amp; recovery</li>
+        <li>🧠 Habit building</li>
+      </ul>
+
+      <div class="sidebar-actions">
+        <button id="downloadButton" class="action-button" type="button">📥 Save Chat History</button>
+        <button id="clearButton" class="action-button" type="button">🗑️ Clear Conversation</button>
+      </div>
+      <p class="privacy-note">Your saved HealthSpace measurements are retrieved by the Python backend when a message is sent. Your Groq API key is kept on the server, not in this page.</p>
+    </aside>
+
+    <section class="chat-panel" aria-label="FitCoach chat">
+      <div class="hero">
+        <h1>FitCoach 💻</h1>
+        <p>Your personal AI fitness and lifestyle coach.</p>
+      </div>
+
+      <div id="messages" class="messages" aria-live="polite"></div>
+
+      <div id="suggestions" class="suggestions">
+        <p>Not sure where to start? Try one of these:</p>
+        <div class="suggestion-grid">
+          <button class="suggestion-button" data-prompt="Can you create a safe 3-day beginner workout routine for me?" type="button">🏋️ Create a 3-Day Workout</button>
+          <button class="suggestion-button" data-prompt="Give me 3 balanced high-protein meal ideas." type="button">🥗 High Protein Meals</button>
+          <button class="suggestion-button" data-prompt="How can I improve my sleep quality and recovery?" type="button">😴 Better Sleep Tips</button>
+        </div>
+      </div>
+
+      <div id="thinkingStatus" class="thinking hidden" role="status">FitCoach is analyzing your request...</div>
+
+      <form id="chatForm" class="composer">
+        <div class="composer-row">
+          <textarea id="userInput" rows="1" maxlength="8000" placeholder="Ask your fitness coach anything..." aria-label="Your message"></textarea>
+          <button id="sendButton" type="submit">Send</button>
+        </div>
+        <div class="composer-options">
+          <label class="voice-option"><input id="voiceToggle" type="checkbox" checked> 🔊 Read responses aloud</label>
+          <span>Enter to send · Shift + Enter for a new line</span>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    const API_URL = "/api/chat";
+    const WELCOME_MESSAGE = "Hello! Welcome to FitCoach! 💪\n\nI'm here to help you with workout plans, nutrition, exercise, and healthy habits.\n\n**What is your main fitness goal right now?**";
+
+    let messages = [{ role: "assistant", content: WELCOME_MESSAGE }];
+    let isGenerating = false;
+
+    const messagesContainer = document.getElementById("messages");
+    const suggestions = document.getElementById("suggestions");
+    const chatForm = document.getElementById("chatForm");
+    const userInput = document.getElementById("userInput");
+    const sendButton = document.getElementById("sendButton");
+    const thinkingStatus = document.getElementById("thinkingStatus");
+    const voiceToggle = document.getElementById("voiceToggle");
+
+    function escapeHtml(value) {
+      return value.replace(/[&<>"']/g, character => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;"
+      })[character]);
+    }
+
+    function inlineMarkdown(safeText) {
+      return safeText
+        .replace(/`([^`]+)`/g, "<code>$1</code>")
+        .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+        .replace(/\*(.+?)\*/g, "<em>$1</em>");
+    }
+
+    // Render a safe, lightweight subset of the Markdown used by the AI replies.
+    function markdownToHtml(markdown) {
+      const lines = escapeHtml(String(markdown)).split("\n");
+      const output = [];
+      let paragraph = [];
+      let listType = null;
+
+      function flushParagraph() {
+        if (paragraph.length) {
+          output.push(`<p>${paragraph.map(inlineMarkdown).join("<br>")}</p>`);
+          paragraph = [];
+        }
+      }
+
+      function closeList() {
+        if (listType) {
+          output.push(listType === "ul" ? "</ul>" : "</ol>");
+          listType = null;
+        }
+      }
+
+      for (const originalLine of lines) {
+        const line = originalLine.trim();
+        if (!line) {
+          flushParagraph();
+          closeList();
+          continue;
+        }
+
+        const heading = line.match(/^(#{1,3})\s+(.+)$/);
+        if (heading) {
+          flushParagraph(); closeList();
+          const level = heading[1].length + 1;
+          output.push(`<h${level}>${inlineMarkdown(heading[2])}</h${level}>`);
+          continue;
+        }
+
+        if (/^(---|___|\*\*\*)$/.test(line)) {
+          flushParagraph(); closeList(); output.push("<hr>"); continue;
+        }
+
+        const unordered = line.match(/^[-*]\s+(.+)$/);
+        const ordered = line.match(/^\d+[.)]\s+(.+)$/);
+        if (unordered || ordered) {
+          flushParagraph();
+          const wantedType = unordered ? "ul" : "ol";
+          if (listType !== wantedType) {
+            closeList();
+            output.push(wantedType === "ul" ? "<ul>" : "<ol>");
+            listType = wantedType;
+          }
+          output.push(`<li>${inlineMarkdown((unordered || ordered)[1])}</li>`);
+          continue;
+        }
+
+        closeList();
+        paragraph.push(line);
+      }
+
+      flushParagraph();
+      closeList();
+      return output.join("");
+    }
+
+    function renderMessages() {
+      messagesContainer.replaceChildren();
+
+      messages.forEach(message => {
+        const bubble = document.createElement("article");
+        bubble.className = `message ${message.role}`;
+
+        const label = document.createElement("div");
+        label.className = "message-label";
+        label.textContent = message.role === "user" ? "You" : "FitCoach";
+
+        const content = document.createElement("div");
+        content.className = "message-content";
+        content.innerHTML = markdownToHtml(message.content);
+
+        bubble.append(label, content);
+        messagesContainer.append(bubble);
+      });
+
+      suggestions.classList.toggle("hidden", messages.length !== 1);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    function setGenerating(value) {
+      isGenerating = value;
+      chatForm.classList.toggle("hidden", value);
+      thinkingStatus.classList.toggle("hidden", !value);
+      sendButton.disabled = value;
+      userInput.disabled = value;
+      document.querySelectorAll(".suggestion-button").forEach(button => {
+        button.disabled = value;
+      });
+    }
+
+    function speakResponse(text) {
+      if (!voiceToggle.checked || !("speechSynthesis" in window)) return;
+      window.speechSynthesis.cancel();
+      const plainText = text
+        .replace(/```[\s\S]*?```/g, " code omitted ")
+        .replace(/[#*_`>]/g, " ")
+        .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1");
+      const utterance = new SpeechSynthesisUtterance(plainText);
+      utterance.rate = 1;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    async function sendMessage(prompt) {
+      const cleanPrompt = String(prompt || "").trim();
+      if (!cleanPrompt || isGenerating) return;
+
+      messages.push({ role: "user", content: cleanPrompt });
+      renderMessages();
+      userInput.value = "";
+      setGenerating(true);
+
+      try {
+        const response = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ messages: messages.slice(-12) })
+        });
+
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) {
+          throw new Error(data.error || `Server error (${response.status}).`);
+        }
+        if (!data.response) throw new Error("The AI returned an empty response.");
+
+        messages.push({ role: "assistant", content: data.response });
+        renderMessages();
+        speakResponse(data.response);
+      } catch (error) {
+        const message = error.message.includes("Failed to fetch")
+          ? "Could not connect to the FitCoach server. Make sure fitcoach_server.py is running, then refresh this page."
+          : `Oops, something went wrong: ${error.message}`;
+        messages.push({ role: "assistant", content: message });
+        renderMessages();
+      } finally {
+        setGenerating(false);
+        userInput.focus();
+      }
+    }
+
+    chatForm.addEventListener("submit", event => {
+      event.preventDefault();
+      sendMessage(userInput.value);
+    });
+
+    userInput.addEventListener("keydown", event => {
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        chatForm.requestSubmit();
+      }
+    });
+
+    document.querySelectorAll(".suggestion-button").forEach(button => {
+      button.addEventListener("click", () => sendMessage(button.dataset.prompt));
+    });
+
+    document.getElementById("clearButton").addEventListener("click", () => {
+      if (isGenerating) return;
+      if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+      messages = [{
+        role: "assistant",
+        content: "Hello again! I've cleared our chat. What fitness goal are we focusing on today? 💪"
+      }];
+      renderMessages();
+      userInput.value = "";
+    });
+
+    document.getElementById("downloadButton").addEventListener("click", () => {
+      const markdown = messages.map(message => {
+        const role = message.role === "user" ? "You" : "FitCoach";
+        return `**${role}:**\n\n${message.content}`;
+      }).join("\n\n---\n\n");
+
+      const file = new Blob([markdown], { type: "text/markdown;charset=utf-8" });
+      const url = URL.createObjectURL(file);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "fitcoach_chat.md";
+      document.body.append(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    });
+
+    renderMessages();
+  </script>
+</body>
+</html>
