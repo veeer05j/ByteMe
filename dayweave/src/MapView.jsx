@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, Circle } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import rawData from './map_data.json'; // Make sure this ends in .json
+import rawData from './map_data.json'; // Make sure your file is named exactly this
 
-// FIX: Make pins visible
+// 1. FIX: Make the map pins visible in React
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
@@ -12,7 +12,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
 });
 
-// Math formula to calculate distance in meters
+// 2. Math formula to calculate distance in meters
 function getDistanceInMeters(lat1, lon1, lat2, lon2) {
   const R = 6371e3; 
   const dLat = (lat2 - lat1) * (Math.PI / 180);
@@ -25,15 +25,11 @@ function getDistanceInMeters(lat1, lon1, lat2, lon2) {
   return R * c; 
 }
 
-// Convert GeoJSON to our app format
+// 3. Convert OpenStreetMap GeoJSON to our App's format
 const clinicsData = rawData.features.map((feature, index) => {
-  // THE FIX: Read the tags correctly based on how OpenStreetMap exports GeoJSON
   const props = feature.properties.tags || feature.properties || {};
-  
-  // Get the exact type from the data
   let rawType = props.amenity || props.shop || props.healthcare || "clinic";
   
-  // Make sure "chemist" counts as "pharmacy" and "doctors" counts as "clinic"
   if (rawType === "chemist") rawType = "pharmacy";
   if (rawType === "doctors") rawType = "clinic";
 
@@ -47,12 +43,12 @@ const clinicsData = rawData.features.map((feature, index) => {
     openingHours: props.opening_hours || "Hours not listed"
   };
 });
-export default function MapView() {
+
+// 4. Accept setActiveTab and addTask from App.jsx
+export default function MapView({ setActiveTab, addTask }) {
   const [userLocation, setUserLocation] = useState(null);
   const [statusMessage, setStatusMessage] = useState("");
   const [isArrived, setIsArrived] = useState(false);
-  
-  // NEW: State for the category filter
   const [selectedCategory, setSelectedCategory] = useState("all");
 
   const checkLocationToClinic = (clinic) => {
@@ -76,6 +72,14 @@ export default function MapView() {
         if (distance <= 100) { 
           setStatusMessage(`🎉 You have arrived at ${clinic.name}!`);
           setIsArrived(true);
+          
+          // AUTOMATION: Switch to the Chat tab after 2.5 seconds to greet them
+          setTimeout(() => {
+            // Save the arrival so the Chat can read it
+            localStorage.setItem('lastArrivedClinic', clinic.name);
+            setActiveTab("chat"); 
+          }, 2500); 
+
         } else {
           setStatusMessage(`You are ${Math.round(distance)} meters away from ${clinic.name}.`);
         }
@@ -85,24 +89,23 @@ export default function MapView() {
     );
   };
 
-  // NEW: Filter the data based on the selected category
+  // 5. Filter based on the selected button
   const filteredData = clinicsData.filter(clinic => {
     if (selectedCategory === "all") return true;
-    // Basic check to match the OpenStreetMap tags
     return clinic.type.includes(selectedCategory); 
   });
 
   return (
     <div style={{ height: "100vh", width: "100vw", display: "flex", flexDirection: "column", position: "relative" }}>
       
-      {/* HEADER & FILTERS */}
-      <div style={{ position: "absolute", top: 0, left: 0, right: 0, zIndex: 1000, backgroundColor: "white", padding: "16px", boxShadow: "0 4px 6px rgba(0,0,0,0.1)" }}>
+      {/* --- HEADER & FILTERS --- */}
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, zIndex: 1000, backgroundColor: "white", padding: "16px", boxShadow: "0 4px 6px rgba(0,0,0,0.1)", borderBottomLeftRadius: "16px", borderBottomRightRadius: "16px" }}>
         
         <h2 style={{ margin: 0, fontSize: "20px", fontWeight: "bold", textAlign: "center", color: "#1e3a8a" }}>
           Nearby Health Services
         </h2>
 
-        {/* CATEGORY BUTTONS */}
+        {/* Category Buttons */}
         <div style={{ display: "flex", justifyContent: "center", gap: "8px", marginTop: "12px", flexWrap: "wrap" }}>
           {["all", "pharmacy", "clinic", "hospital"].map((cat) => (
             <button
@@ -117,7 +120,8 @@ export default function MapView() {
                 fontWeight: "bold",
                 textTransform: "capitalize",
                 cursor: "pointer",
-                fontSize: "12px"
+                fontSize: "12px",
+                transition: "all 0.2s ease"
               }}
             >
               {cat === "all" ? "All" : cat + "s"}
@@ -125,7 +129,7 @@ export default function MapView() {
           ))}
         </div>
 
-        {/* STATUS MESSAGE */}
+        {/* Status Message (Shows when checking GPS) */}
         {statusMessage && (
           <div style={{ marginTop: "12px", padding: "8px", textAlign: "center", borderRadius: "8px", fontSize: "14px", fontWeight: "bold", backgroundColor: isArrived ? "#dcfce7" : "#dbeafe", color: isArrived ? "#166534" : "#1e40af" }}>
             {statusMessage}
@@ -133,7 +137,7 @@ export default function MapView() {
         )}
       </div>
 
-      {/* MAP */}
+      {/* --- MAP CONTAINER --- */}
       <div style={{ flex: 1, width: "100%", marginTop: "130px" }}>
         <MapContainer 
           center={[-20.2188, 57.4961]} 
@@ -145,20 +149,34 @@ export default function MapView() {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
           />
 
-          {/* RENDER FILTERED DATA */}
+          {/* Render filtered pins */}
           {filteredData.map((clinic) => {
             if (!clinic.latitude || !clinic.longitude) return null; 
 
             return (
               <Marker key={clinic.id} position={[clinic.latitude, clinic.longitude]}>
                 <Popup>
-                  <div style={{ textAlign: "center", minWidth: "180px" }}>
-                    <strong style={{ display: "block", fontSize: "14px", color: "#1e3a8a" }}>{clinic.name}</strong>
-                    <span style={{ fontSize: "12px", color: "#4b5563", textTransform: "capitalize" }}>{clinic.type}</span>
+                  <div style={{ textAlign: "center", minWidth: "180px", paddingBottom: "5px" }}>
+                    <strong style={{ display: "block", fontSize: "15px", color: "#1e3a8a", marginBottom: "2px" }}>{clinic.name}</strong>
+                    <span style={{ fontSize: "12px", color: "#6b7280", textTransform: "capitalize" }}>{clinic.type}</span>
                     
+                    {/* Appointments / Booking Button */}
+                    <button 
+                      onClick={() => {
+                        if(addTask) {
+                          addTask(`Appointment at ${clinic.name}`);
+                          alert(`✅ Appointment successfully added to your routine!`);
+                        }
+                      }}
+                      style={{ marginTop: "10px", width: "100%", backgroundColor: "#16a34a", color: "white", padding: "8px", borderRadius: "6px", border: "none", fontWeight: "bold", cursor: "pointer", fontSize: "13px" }}
+                    >
+                      📅 Book Appointment
+                    </button>
+
+                    {/* GPS Check Button */}
                     <button 
                       onClick={() => checkLocationToClinic(clinic)}
-                      style={{ marginTop: "8px", width: "100%", backgroundColor: "#2563eb", color: "white", padding: "8px", borderRadius: "6px", border: "none", fontWeight: "bold", cursor: "pointer" }}
+                      style={{ marginTop: "6px", width: "100%", backgroundColor: "#2563eb", color: "white", padding: "8px", borderRadius: "6px", border: "none", fontWeight: "bold", cursor: "pointer", fontSize: "13px" }}
                     >
                       📍 Check My Location
                     </button>
@@ -168,11 +186,12 @@ export default function MapView() {
             );
           })}
 
+          {/* Show User Location as a Blue Dot */}
           {userLocation && (
             <Circle 
               center={[userLocation.lat, userLocation.lng]} 
               radius={30} 
-              pathOptions={{ color: 'blue', fillColor: 'blue', fillOpacity: 0.6 }} 
+              pathOptions={{ color: '#2563eb', fillColor: '#2563eb', fillOpacity: 0.6 }} 
             />
           )}
         </MapContainer>
