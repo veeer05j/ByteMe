@@ -1,0 +1,3452 @@
+{
+  "type": "FeatureCollection",
+  "generator": "overpass-turbo",
+  "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+  "timestamp": "2026-11-13T11:50:17Z",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "node/693046470",
+      "properties": {
+        "@id": "node/693046470",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Pharmacy Pointe aux Sables",
+        "name:en": "Hwa Yen Pharmacy"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4666916,
+          -20.1708328
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/1397554020",
+      "properties": {
+        "@id": "node/1397554020",
+        "amenity": "pharmacy",
+        "name": "London Way Pharma"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.3655849,
+          -20.3532462
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/1662930789",
+      "properties": {
+        "@id": "node/1662930789",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Grand Bay Pharma"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5856186,
+          -20.013608
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/1757755699",
+      "properties": {
+        "@id": "node/1757755699",
+        "amenity": "pharmacy",
+        "dispensing": "yes",
+        "name": "Pharmacie du Jardin"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.519986,
+          -20.320864
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/1793503162",
+      "properties": {
+        "@id": "node/1793503162",
+        "amenity": "pharmacy",
+        "building": "commercial",
+        "contact:phone": "+230 674 6008",
+        "dispensing": "yes",
+        "name": "Pharmacie Espace Santé",
+        "opening_hours": "Mo-Th 08:30-19:30; Fr-Sa 08:30-20:00; Su 08:30-13:00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5183069,
+          -20.3233571
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/1815074700",
+      "properties": {
+        "@id": "node/1815074700",
+        "addr:street": "Pamplemousses Road",
+        "amenity": "pharmacy",
+        "name": "First- Aid Pharmacy",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5250204,
+          -20.1404964
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/1823089241",
+      "properties": {
+        "@id": "node/1823089241",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Medical Trading Cascavelle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4026821,
+          -20.2789361
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/2153362362",
+      "properties": {
+        "@id": "node/2153362362",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Pharmacy Ducasse"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.580876,
+          -20.0156641
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/2153376271",
+      "properties": {
+        "@id": "node/2153376271",
+        "amenity": "hospital",
+        "emergency": "yes",
+        "healthcare": "hospital",
+        "name": "Clinique du Nord"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5598529,
+          -20.0085091
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/2157530287",
+      "properties": {
+        "@id": "node/2157530287",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Pharmancy Decase Arsenal"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5411418,
+          -20.1013339
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/2162892430",
+      "properties": {
+        "@id": "node/2162892430",
+        "amenity": "pharmacy",
+        "name": "Pharma Goodlands"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.6462286,
+          -20.0348878
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/2173164897",
+      "properties": {
+        "@id": "node/2173164897",
+        "addr:city": "Port Louis",
+        "addr:street": "Queen street",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Newton Parmacy"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5027911,
+          -20.1616147
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/2177249371",
+      "properties": {
+        "@id": "node/2177249371",
+        "amenity": "pharmacy",
+        "name": "Grand Bois Pharma"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5525635,
+          -20.4191978
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/2601372375",
+      "properties": {
+        "@id": "node/2601372375",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Petite Farmacy"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.6295245,
+          -20.0230642
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/2601381563",
+      "properties": {
+        "@id": "node/2601381563",
+        "amenity": "pharmacy",
+        "name": "Pharmacy Cadress"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.6513858,
+          -20.0386085
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/2624972983",
+      "properties": {
+        "@id": "node/2624972983",
+        "addr:city": "Port Louis",
+        "addr:street": "Farquar Street",
+        "amenity": "pharmacy",
+        "contact:facebook": "https://www.facebook.com/pharmacyfarquhar",
+        "contact:phone": "+230 212 1426",
+        "healthcare": "pharmacy",
+        "name": "Pharmacie Farquhar",
+        "opening_hours": "Mo-Fr 08:00-17:30; Sa 8:00-17:00; Su 08:00-12:00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5028101,
+          -20.16031
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/2656293192",
+      "properties": {
+        "@id": "node/2656293192",
+        "amenity": "hospital",
+        "healthcare": "hospital",
+        "name": "L'Escalier Medi Clinic"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.6175984,
+          -20.4747703
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/3103743801",
+      "properties": {
+        "@id": "node/3103743801",
+        "amenity": "clinic",
+        "name": "Medical Laboratory"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4692974,
+          -20.1756797
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/3104081558",
+      "properties": {
+        "@id": "node/3104081558",
+        "addr:street": "John Kennedy Street",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Pharmacie du Port",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5010409,
+          -20.1618332
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/3215377680",
+      "properties": {
+        "@id": "node/3215377680",
+        "addr:street": "Sottisse Road",
+        "amenity": "clinic",
+        "healthcare": "clinic",
+        "name": "Grand Bay Medical and Diagnostic Centre"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5804318,
+          -20.0195466
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/3658931594",
+      "properties": {
+        "@id": "node/3658931594",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Albion Pharmacy"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4080645,
+          -20.2140077
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/3753991177",
+      "properties": {
+        "@id": "node/3753991177",
+        "amenity": "hospital",
+        "name": "Primary School",
+        "note": "Ramsaroop RAmgutty Aryan Vedic Aided School"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.6840757,
+          -20.1484001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/3754024943",
+      "properties": {
+        "@id": "node/3754024943",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Oxpharm"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4749529,
+          -20.2710777
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/3754148453",
+      "properties": {
+        "@id": "node/3754148453",
+        "amenity": "hospital",
+        "healthcare": "hospital",
+        "name": "The Vale Area Health Centre"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5976273,
+          -20.0288247
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/3754488545",
+      "properties": {
+        "@id": "node/3754488545",
+        "addr:city": "Triolet",
+        "amenity": "hospital",
+        "healthcare": "hospital",
+        "name": "Triolet Medi Clinic"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5553179,
+          -20.0604634
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/3995063593",
+      "properties": {
+        "@id": "node/3995063593",
+        "addr:street": "Saint Jean Road",
+        "amenity": "pharmacy",
+        "name": "La Louise Pharmacy",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4755695,
+          -20.2700184
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4151568714",
+      "properties": {
+        "@id": "node/4151568714",
+        "amenity": "pharmacy",
+        "ele": "125.917686",
+        "healthcare": "pharmacy",
+        "name": "Medactiv Cascavelle Pharmacy"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4028866,
+          -20.2784825
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4304607089",
+      "properties": {
+        "@id": "node/4304607089",
+        "amenity": "pharmacy",
+        "name": "Pharmacie Boundary"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4715305,
+          -20.2553897
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4304939292",
+      "properties": {
+        "@id": "node/4304939292",
+        "amenity": "clinic",
+        "healthcare": "clinic",
+        "name": "Clinique Bon Pasteur"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4719066,
+          -20.2425512
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4305046313",
+      "properties": {
+        "@id": "node/4305046313",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Pharmacie Notre Dame Des Victoires"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4748092,
+          -20.2444586
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4601420291",
+      "properties": {
+        "@id": "node/4601420291",
+        "amenity": "clinic",
+        "healthcare": "clinic",
+        "name": "C-Care Clinic Grand Baie La Croisette",
+        "old_name": "Fortis Darne Medical Center & Diagnostics",
+        "operator": "C-Care",
+        "short_name": "C-Care Clinic",
+        "website": "https://www.c-care.mu/c-care-clinic-grand-baie-la-croisette"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5800737,
+          -20.0219317
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4610789689",
+      "properties": {
+        "@id": "node/4610789689",
+        "amenity": "pharmacy",
+        "name:en": "Pyramid Pharmacy"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.7564385,
+          -20.2558777
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4612335549",
+      "properties": {
+        "@id": "node/4612335549",
+        "amenity": "hospital",
+        "name": "Mahebourg Hospital"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.7031815,
+          -20.4112976
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4621711885",
+      "properties": {
+        "@id": "node/4621711885",
+        "amenity": "hospital",
+        "name": "Primary Health Care"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.6844591,
+          -20.1483065
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4622176512",
+      "properties": {
+        "@id": "node/4622176512",
+        "amenity": "pharmacy",
+        "name": "Pharmacy"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.6553335,
+          -20.169533
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4623186368",
+      "properties": {
+        "@id": "node/4623186368",
+        "amenity": "pharmacy",
+        "name": "Forme",
+        "opening_hours": "09:00-17:00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.6884404,
+          -20.1099492
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4623226590",
+      "properties": {
+        "@id": "node/4623226590",
+        "amenity": "pharmacy"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.6924182,
+          -20.1087546
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4623226593",
+      "properties": {
+        "@id": "node/4623226593",
+        "amenity": "pharmacy",
+        "name": "Baroda Pharmacy"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.6928722,
+          -20.1083695
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4623226598",
+      "properties": {
+        "@id": "node/4623226598",
+        "amenity": "pharmacy",
+        "name": "Devika Pharmacy"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.6921436,
+          -20.1076368
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4624252891",
+      "properties": {
+        "@id": "node/4624252891",
+        "amenity": "pharmacy",
+        "name:fr": "La Pharmacie New Stanley"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4668653,
+          -20.2424803
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4624252894",
+      "properties": {
+        "@id": "node/4624252894",
+        "amenity": "pharmacy",
+        "name:fr": "Pharmacie Hugnin"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4678878,
+          -20.25028
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4624285293",
+      "properties": {
+        "@id": "node/4624285293",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Pharmacie Edward VII"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4746832,
+          -20.244397
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4625704622",
+      "properties": {
+        "@id": "node/4625704622",
+        "amenity": "hospital",
+        "name": "Chemin Grenier Dispensary"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4709686,
+          -20.4925313
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4662964999",
+      "properties": {
+        "@id": "node/4662964999",
+        "amenity": "pharmacy",
+        "name": "Dodo Pharmacy"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.6615629,
+          -20.4317501
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4662965004",
+      "properties": {
+        "@id": "node/4662965004",
+        "amenity": "pharmacy",
+        "name": "Doorgakanth Pharmacy"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.6613485,
+          -20.4320837
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4676442335",
+      "properties": {
+        "@id": "node/4676442335",
+        "addr:city": "Ebene",
+        "addr:street": "Ebene Commercial Centre",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Ebene Pharmacy",
+        "operator": "MedActive"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.487901,
+          -20.243465
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4694809668",
+      "properties": {
+        "@id": "node/4694809668",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5525685,
+          -20.0564622
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4875789053",
+      "properties": {
+        "@id": "node/4875789053",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Eiman Pharmacy",
+        "phone": "+230 2126753"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5029823,
+          -20.1597264
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4875789091",
+      "properties": {
+        "@id": "node/4875789091",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Phamacy Farquar"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5031783,
+          -20.1599004
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4875889466",
+      "properties": {
+        "@id": "node/4875889466",
+        "addr:city": "Port-Louis",
+        "addr:city:fr": "Port-Louis",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Pharmacie Carbone",
+        "name:fr": "Pharmacie Carbone",
+        "phone": "2138542"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4995406,
+          -20.1633883
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4901462716",
+      "properties": {
+        "@id": "node/4901462716",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5856946,
+          -20.0131163
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4901467332",
+      "properties": {
+        "@id": "node/4901467332",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5871004,
+          -20.0122225
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4976278428",
+      "properties": {
+        "@id": "node/4976278428",
+        "addr:street": "Rue la Chaux",
+        "amenity": "clinic",
+        "healthcare": "clinic",
+        "name": "Cabinet Medical",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.7060599,
+          -20.4064428
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4976284444",
+      "properties": {
+        "@id": "node/4976284444",
+        "addr:street": "Rue la Bourdonnais",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Blue Bay Pharmacy",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.7092386,
+          -20.4098337
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4977549506",
+      "properties": {
+        "@id": "node/4977549506",
+        "addr:street": "Rue de Maurice",
+        "amenity": "clinic",
+        "healthcare": "clinic",
+        "name": "Al-Shafa Medical Centre",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.7081549,
+          -20.4095978
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4977549507",
+      "properties": {
+        "@id": "node/4977549507",
+        "addr:street": "Rue de Suffren",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Al-Shafa Pharmacy",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.7080948,
+          -20.4096153
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4977564362",
+      "properties": {
+        "@id": "node/4977564362",
+        "addr:street": "Rue Marianne",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Pharmacie de Mahebourg",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.7057431,
+          -20.4076542
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4977946943",
+      "properties": {
+        "@id": "node/4977946943",
+        "addr:street": "Royal Road",
+        "amenity": "pharmacy",
+        "name": "All in One Pharmacy",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.7054564,
+          -20.4125294
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4977946951",
+      "properties": {
+        "@id": "node/4977946951",
+        "addr:street": "Royal Road",
+        "amenity": "clinic",
+        "name": "Green Cross",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.7053794,
+          -20.4127235
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4977976119",
+      "properties": {
+        "@id": "node/4977976119",
+        "addr:street": "Sir Charles Lees Street",
+        "amenity": "pharmacy",
+        "name": "Pharmacie D'Arifat",
+        "name:en": "Arifat Pharmacy",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5294248,
+          -20.3186219
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4978082266",
+      "properties": {
+        "@id": "node/4978082266",
+        "addr:street": "Royal Road",
+        "amenity": "pharmacy",
+        "name": "R.A.R. Pharmacy",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.7053213,
+          -20.4140781
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4978159864",
+      "properties": {
+        "@id": "node/4978159864",
+        "addr:street": "Jerningham",
+        "amenity": "pharmacy",
+        "name": "Pharmacie Jhugroo",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5249279,
+          -20.3151558
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4978294569",
+      "properties": {
+        "@id": "node/4978294569",
+        "addr:street": "Royal Road Curepipe",
+        "amenity": "pharmacy",
+        "name": "Pharmacie",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5230209,
+          -20.3158259
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4978365509",
+      "properties": {
+        "@id": "node/4978365509",
+        "addr:street": "Royal Road Curepipe",
+        "amenity": "pharmacy",
+        "name": "Active Care Pharmacy",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5253475,
+          -20.3069614
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4978376624",
+      "properties": {
+        "@id": "node/4978376624",
+        "addr:country": "MU",
+        "addr:street": "New Quartier Militaire Road",
+        "amenity": "pharmacy",
+        "name": "Zenquil Pharma",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5302261,
+          -20.3058021
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4978376631",
+      "properties": {
+        "@id": "node/4978376631",
+        "addr:country": "MU",
+        "addr:street": "New Quartier Militaire Road",
+        "amenity": "pharmacy",
+        "name": "Pharmacie Hermes",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5303785,
+          -20.3055797
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4978393618",
+      "properties": {
+        "@id": "node/4978393618",
+        "addr:street": "Royal Road Curepipe",
+        "amenity": "pharmacy",
+        "name": "Pharmacie D'Epinay",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5238761,
+          -20.3131051
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4979802928",
+      "properties": {
+        "@id": "node/4979802928",
+        "addr:street": "Mooljee Road",
+        "amenity": "clinic",
+        "name": "Cabinet Medicale",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.6605751,
+          -20.432312
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4979802937",
+      "properties": {
+        "@id": "node/4979802937",
+        "addr:street": "Mooljee Road",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Pharmacie Jeetpharm",
+        "operator": "Mr Reaz Jeetun",
+        "phone": "+2306377688",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.6609022,
+          -20.4319502
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4979841757",
+      "properties": {
+        "@id": "node/4979841757",
+        "addr:street": "Macoona Road",
+        "amenity": "clinic",
+        "name": "Biosante Medical Laboratories",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.6629954,
+          -20.4318373
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4979966752",
+      "properties": {
+        "@id": "node/4979966752",
+        "addr:street": "Floreal Main Road",
+        "amenity": "pharmacy",
+        "name": "Pharmacy Biladams",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5137298,
+          -20.3113939
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4980088245",
+      "properties": {
+        "@id": "node/4980088245",
+        "addr:street": "Georges Guibert Street",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Floreal Pharmacy",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5165081,
+          -20.3127275
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4980155201",
+      "properties": {
+        "@id": "node/4980155201",
+        "addr:street": "Ligne Berthaud",
+        "amenity": "pharmacy",
+        "name": "Pharmacy Berthaud",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5073802,
+          -20.3272933
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4980295702",
+      "properties": {
+        "@id": "node/4980295702",
+        "addr:street": "Route Royale",
+        "amenity": "pharmacy",
+        "name": "Nouvelle France Pharmacy",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5711878,
+          -20.3779238
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4980458857",
+      "properties": {
+        "@id": "node/4980458857",
+        "addr:street": "Route Royale",
+        "amenity": "pharmacy",
+        "name": "Rose Pharmacy",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5460859,
+          -20.3439801
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4980574249",
+      "properties": {
+        "@id": "node/4980574249",
+        "addr:street": "Rue General de Caen (Centre)",
+        "amenity": "pharmacy",
+        "name": "Health Star Pharmacy",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5327671,
+          -20.3232064
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4980664097",
+      "properties": {
+        "@id": "node/4980664097",
+        "addr:street": "Royal Road Forest Side",
+        "amenity": "pharmacy",
+        "name": "Care 4u Pharmacy",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5276103,
+          -20.3240994
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4980852279",
+      "properties": {
+        "@id": "node/4980852279",
+        "addr:street": "Gustav Colette Road",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Ahmud Pharmacy",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5273054,
+          -20.3292378
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4981754251",
+      "properties": {
+        "@id": "node/4981754251",
+        "addr:street": "Avenue des Flamingos",
+        "amenity": "pharmacy",
+        "name": "Flic en Flac Pharmacy",
+        "opening_hours": "Mo-Sa 08:30-18:30",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.3687131,
+          -20.2798993
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4981754256",
+      "properties": {
+        "@id": "node/4981754256",
+        "addr:street": "Avenue des Flamingos",
+        "amenity": "clinic",
+        "healthcare": "clinic",
+        "name": "Dr. Leutéritz",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.3686646,
+          -20.280567
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4981968903",
+      "properties": {
+        "@id": "node/4981968903",
+        "addr:city": "Flic en Flac",
+        "addr:street": "Royal Road",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Pharmacie de L'Occident",
+        "opening_hours": "24/7",
+        "phone": "+2304535858"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.3699204,
+          -20.276516
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4983032372",
+      "properties": {
+        "@id": "node/4983032372",
+        "addr:street": "John Kennedy Avenue",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Noush Pharmacy",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4879037,
+          -20.3127585
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4983103584",
+      "properties": {
+        "@id": "node/4983103584",
+        "addr:street": "Vacoas La Marie Road",
+        "amenity": "clinic",
+        "name": "Green Cross Medical Laboratory",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4845279,
+          -20.3205957
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4983213389",
+      "properties": {
+        "@id": "node/4983213389",
+        "addr:street": "Leclezio Avenue",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Pharmacie de Moka",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5024576,
+          -20.2217706
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4983213391",
+      "properties": {
+        "@id": "node/4983213391",
+        "addr:street": "Leclezio Ave",
+        "amenity": "clinic",
+        "healthcare": "clinic",
+        "name": "Cabinet Medical",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5023868,
+          -20.2216524
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4983392220",
+      "properties": {
+        "@id": "node/4983392220",
+        "addr:street": "Sir Seewoosagur Ramgoolam Street",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Pharmacie Du Centre",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5071707,
+          -20.1618065
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4983398684",
+      "properties": {
+        "@id": "node/4983398684",
+        "addr:street": "Bois Cheri Road",
+        "amenity": "pharmacy",
+        "name": "Pharmexpert Pharmacy",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5344525,
+          -20.2211261
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4983458155",
+      "properties": {
+        "@id": "node/4983458155",
+        "addr:street": "Port Louis - Central Flaq Road",
+        "amenity": "pharmacy",
+        "name": "Medical Care Pharmacy",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5181056,
+          -20.1549068
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4983601224",
+      "properties": {
+        "@id": "node/4983601224",
+        "addr:street": "Temple Road",
+        "amenity": "pharmacy",
+        "name": "Pharmacy Good Heart",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.521037,
+          -20.1474855
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4983601246",
+      "properties": {
+        "@id": "node/4983601246",
+        "addr:street": "Temple Road",
+        "amenity": "clinic",
+        "name": "Cabinet Medical",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5225008,
+          -20.1468172
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4983649668",
+      "properties": {
+        "@id": "node/4983649668",
+        "addr:street": "Pamplemousses Road",
+        "amenity": "clinic",
+        "healthcare": "clinic",
+        "name": "Cabinet Medical",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5250014,
+          -20.140531
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4985260483",
+      "properties": {
+        "@id": "node/4985260483",
+        "addr:street": "Vacoas La Marie Road",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Pharmacie 15 cantons",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.485237,
+          -20.307247
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4985735301",
+      "properties": {
+        "@id": "node/4985735301",
+        "addr:street": "Geoffroy Branch Road",
+        "amenity": "pharmacy",
+        "fixme": "name",
+        "name": "Pharmacy",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4167954,
+          -20.2626324
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4985849490",
+      "properties": {
+        "@id": "node/4985849490",
+        "addr:street": "Rivière Noire Road",
+        "amenity": "pharmacy",
+        "name": "Cabinet Medical Pharmacy",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.417912,
+          -20.2569221
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4990207220",
+      "properties": {
+        "@id": "node/4990207220",
+        "addr:street": "La Caverne No. 1",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Pharmacie La Caverne",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4802538,
+          -20.3014356
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4990225817",
+      "properties": {
+        "@id": "node/4990225817",
+        "addr:street": "Candos Vacoas Road",
+        "amenity": "clinic",
+        "healthcare": "clinic",
+        "name": "Omnitronics;Pharmacie Visitation",
+        "shop": "yes",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4847121,
+          -20.3017268
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4990226731",
+      "properties": {
+        "@id": "node/4990226731",
+        "addr:street": "Candos Vacoas Road",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Green Cross Pharmacy",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4849331,
+          -20.3017267
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4990255664",
+      "properties": {
+        "@id": "node/4990255664",
+        "addr:street": "Rivière Noire Road",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Pharmacy Petit Rivière",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4463629,
+          -20.1958603
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4990272035",
+      "properties": {
+        "@id": "node/4990272035",
+        "addr:street": "Saint Paul Road",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Jhugroos Bros",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4913788,
+          -20.2993391
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4990304266",
+      "properties": {
+        "@id": "node/4990304266",
+        "addr:street": "John Kennedy Avenue",
+        "amenity": "pharmacy",
+        "dispensing": "yes",
+        "drive_through": "no",
+        "healthcare": "pharmacy",
+        "name": "Pharmacie Moraby",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4930955,
+          -20.2959211
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4990471952",
+      "properties": {
+        "@id": "node/4990471952",
+        "addr:street": "Port Louis - Central Flaq Road",
+        "amenity": "pharmacy",
+        "name": "Abercrombie Pharmacy",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5233082,
+          -20.1475294
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4990471967",
+      "properties": {
+        "@id": "node/4990471967",
+        "addr:street": "Port Louis - Central Flaq Road",
+        "amenity": "pharmacy",
+        "name": "New Pharmacy Burtally Ltee",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5231036,
+          -20.148468
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4990501717",
+      "properties": {
+        "@id": "node/4990501717",
+        "addr:street": "Port Louis - Central Flaq Road",
+        "amenity": "clinic",
+        "healthcare": "clinic",
+        "name": "Sky Labs",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5212597,
+          -20.1523476
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4990514632",
+      "properties": {
+        "@id": "node/4990514632",
+        "addr:street": "Port Louis - Central Flaq Road",
+        "amenity": "pharmacy",
+        "name": "St. Criox Pharmacy",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5209246,
+          -20.152634
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4990685141",
+      "properties": {
+        "@id": "node/4990685141",
+        "addr:street": "Farquar street",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Port Louis Pharmacy",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5049137,
+          -20.1584658
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4990686430",
+      "properties": {
+        "@id": "node/4990686430",
+        "addr:street": "Sir Edgar Laurent Street",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Life Care Pharmacy",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5124117,
+          -20.1601803
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4990686435",
+      "properties": {
+        "@id": "node/4990686435",
+        "addr:street": "Sir Virgil Naz Street",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Pharmacie la Plaine Verte",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5111426,
+          -20.1590451
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4990745585",
+      "properties": {
+        "@id": "node/4990745585",
+        "addr:street": "Madad Ul Islam Street",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Le Santé Pharmacie",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5132711,
+          -20.1602252
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4990808920",
+      "properties": {
+        "@id": "node/4990808920",
+        "addr:street": "Candos Vacoas Road",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Solferino Pharmacy",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4806724,
+          -20.2864934
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4990816694",
+      "properties": {
+        "@id": "node/4990816694",
+        "addr:street": "Sir Seewoosagur Ramgoolam Street",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Primecare",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5064721,
+          -20.1624682
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4990935407",
+      "properties": {
+        "@id": "node/4990935407",
+        "addr:street": "Candos Vacoas Road",
+        "amenity": "clinic",
+        "healthcare": "clinic",
+        "name": "Jian Wu Tang",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4780017,
+          -20.2789957
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4990935416",
+      "properties": {
+        "@id": "node/4990935416",
+        "addr:street": "Candos Vacoas Road1",
+        "amenity": "clinic",
+        "healthcare": "clinic",
+        "name": "Clinic Candos",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.477894,
+          -20.2787273
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4990935418",
+      "properties": {
+        "@id": "node/4990935418",
+        "addr:street": "Candos Vacoas Road",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Pharmacie Care Plus",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4779118,
+          -20.2787836
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4990972832",
+      "properties": {
+        "@id": "node/4990972832",
+        "addr:street": "Candos Vacoas Road",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Pharmacie Capucines",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4771307,
+          -20.2766175
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4991102082",
+      "properties": {
+        "@id": "node/4991102082",
+        "addr:street": "Candos Vacoas Road",
+        "amenity": "clinic",
+        "name": "Skylabs",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4751047,
+          -20.271463
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4991120969",
+      "properties": {
+        "@id": "node/4991120969",
+        "addr:street": "Jawaharlall Nehru Avenue",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Bassin Pharmacy",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4685073,
+          -20.2790164
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4991236109",
+      "properties": {
+        "@id": "node/4991236109",
+        "addr:street": "La Corderie Street",
+        "amenity": "clinic",
+        "healthcare": "clinic",
+        "name": "Much Better Life",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5025784,
+          -20.1597614
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4991299095",
+      "properties": {
+        "@id": "node/4991299095",
+        "addr:street": "Mahatma Gandhi Street",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Get Well Pharma",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5095111,
+          -20.1732075
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4991397211",
+      "properties": {
+        "@id": "node/4991397211",
+        "amenity": "pharmacy",
+        "contact:phone": "+2302121946",
+        "facebook": "Bell Village Pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Bell Village Pharmacy",
+        "note:addr": "11, Corner Royal Road-Menagerie Street, Bell Village"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4887686,
+          -20.166057
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4991397654",
+      "properties": {
+        "@id": "node/4991397654",
+        "addr:city": "Port-Louis",
+        "addr:street": "Grand Riviere Road",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Pharmacie D'Hotman",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4888043,
+          -20.1664566
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4993350020",
+      "properties": {
+        "@id": "node/4993350020",
+        "addr:street": "Palma Road",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Green Cross Pharmacie",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4727608,
+          -20.2721014
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4993350128",
+      "properties": {
+        "@id": "node/4993350128",
+        "addr:street": "Palma Road",
+        "amenity": "pharmacy",
+        "name": "Pharmacy Pharmak",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4738799,
+          -20.2715157
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4993447219",
+      "properties": {
+        "@id": "node/4993447219",
+        "addr:street": "Palma Road",
+        "amenity": "pharmacy",
+        "name": "Pharmasave",
+        "operator": "Suprevit",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4680298,
+          -20.2741895
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4993466587",
+      "properties": {
+        "@id": "node/4993466587",
+        "addr:street": "Lord Kitchener Street",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Pharmacie",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4948048,
+          -20.1654657
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4995043029",
+      "properties": {
+        "@id": "node/4995043029",
+        "addr:street": "Saint Jean Road",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "St. Jean Pharmacy",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4805295,
+          -20.2638561
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4995069685",
+      "properties": {
+        "@id": "node/4995069685",
+        "addr:street": "Hugnin Street",
+        "amenity": "pharmacy",
+        "name": "Suptar Vit Pharmacy",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4681048,
+          -20.2462337
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4995103577",
+      "properties": {
+        "@id": "node/4995103577",
+        "addr:street": "Candos Vacoas Road",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Bonne-Terre Pharmacy",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4830162,
+          -20.2943442
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4995110309",
+      "properties": {
+        "@id": "node/4995110309",
+        "addr:street": "Boundary Road",
+        "amenity": "pharmacy",
+        "name": "Pharmacie Boundary",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4691407,
+          -20.2563662
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4995152701",
+      "properties": {
+        "@id": "node/4995152701",
+        "addr:street": "Saint Jean Road",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Pharmacie Ideale",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4803303,
+          -20.2641316
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4995164300",
+      "properties": {
+        "@id": "node/4995164300",
+        "addr:street": "Saint Jean Road",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "St Jean Pharmacy",
+        "name:mfe": "Pharmacie les Orchidees",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4807872,
+          -20.2635554
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4995167682",
+      "properties": {
+        "@id": "node/4995167682",
+        "addr:street": "Royal Road Phoenix",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Trochetia Pharmacy",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5077169,
+          -20.2859964
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4995180235",
+      "properties": {
+        "@id": "node/4995180235",
+        "addr:street": "Saint Jean Road",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Pharmacie Glaieul",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.482372,
+          -20.2617025
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4995234827",
+      "properties": {
+        "@id": "node/4995234827",
+        "addr:street": "Saint Jean Road",
+        "amenity": "pharmacy",
+        "name": "Pharmacie Tropicale",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4755638,
+          -20.2702406
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4995237045",
+      "properties": {
+        "@id": "node/4995237045",
+        "addr:street": "Pope Hennessy Street",
+        "amenity": "pharmacy",
+        "name": "Pharmacy Mont Roches",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4630473,
+          -20.2316204
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4995247264",
+      "properties": {
+        "@id": "node/4995247264",
+        "addr:street": "Hugnin Street",
+        "amenity": "pharmacy",
+        "name": "Fla Pharmacie New Stanley",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4668277,
+          -20.2443252
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4995275218",
+      "properties": {
+        "@id": "node/4995275218",
+        "addr:street": "Saint Jean Road",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Pharmaplus",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4811362,
+          -20.2634323
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4995298293",
+      "properties": {
+        "@id": "node/4995298293",
+        "addr:street": "Royal Road Phoenix",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Phoenix Pharmacy",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5051263,
+          -20.2835692
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4995312473",
+      "properties": {
+        "@id": "node/4995312473",
+        "addr:street": "A1",
+        "amenity": "pharmacy",
+        "name": "Pharmacie Medichem",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4681324,
+          -20.2236051
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4995356602",
+      "properties": {
+        "@id": "node/4995356602",
+        "addr:street": "Royal Road Mesnil",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Pharmacie Miopharm",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5126253,
+          -20.2902308
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4995489441",
+      "properties": {
+        "@id": "node/4995489441",
+        "addr:street": "Royal Road Phoenix",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Pharmacy S.N. Beeharry",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.505389,
+          -20.2841158
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4995491471",
+      "properties": {
+        "@id": "node/4995491471",
+        "addr:street": "A1",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Pharmacie De Coromandel",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4698176,
+          -20.1940486
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4995521461",
+      "properties": {
+        "@id": "node/4995521461",
+        "addr:street": "A1",
+        "amenity": "pharmacy",
+        "name": "Pharmacie Biorharm",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4687812,
+          -20.2208725
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4995560247",
+      "properties": {
+        "@id": "node/4995560247",
+        "addr:street": "A1",
+        "amenity": "pharmacy",
+        "name": "Nupharm Pharmacy",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4698948,
+          -20.2135834
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4995730718",
+      "properties": {
+        "@id": "node/4995730718",
+        "addr:street": "Royal Road Belle Rose",
+        "amenity": "clinic",
+        "healthcare": "clinic",
+        "name": "St Jean Clinic",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4861308,
+          -20.2542306
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4995787160",
+      "properties": {
+        "@id": "node/4995787160",
+        "addr:street": "Royal Road Rose Hill",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Pharmacy Pharmalead",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4787281,
+          -20.2456839
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4995889277",
+      "properties": {
+        "@id": "node/4995889277",
+        "addr:street": "Royal Road Rose Hill",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Standard Pharmacy",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4737438,
+          -20.2420042
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4997963230",
+      "properties": {
+        "@id": "node/4997963230",
+        "addr:street": "Royal Road Rose Hill",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Azm Pharmacy",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4717184,
+          -20.2368745
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4997963233",
+      "properties": {
+        "@id": "node/4997963233",
+        "addr:street": "Royal Road Rose Hill",
+        "amenity": "clinic",
+        "healthcare": "clinic",
+        "name": "Rogan Clinic",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4717523,
+          -20.2369887
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4998024770",
+      "properties": {
+        "@id": "node/4998024770",
+        "addr:street": "Royal Road Rose Hill",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Pharmacy",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.470278,
+          -20.2339456
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/4998029030",
+      "properties": {
+        "@id": "node/4998029030",
+        "addr:city": "Beau Bassin",
+        "addr:street": "Royal Road Rose Hill",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Pharmacie Impériale",
+        "source": "Kaart Ground Survey 2017"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4678912,
+          -20.2277832
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/5033523521",
+      "properties": {
+        "@id": "node/5033523521",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name:en": "Platinium pharmacy"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5854795,
+          -20.0482343
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/5068602788",
+      "properties": {
+        "@id": "node/5068602788",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5141233,
+          -20.168588
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/5106618424",
+      "properties": {
+        "@id": "node/5106618424",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Pharmacy Rose",
+        "name:en": "Pharmacy Rose"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.7229783,
+          -20.1839327
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/5225994871",
+      "properties": {
+        "@id": "node/5225994871",
+        "amenity": "pharmacy",
+        "dispensing": "yes",
+        "healthcare": "pharmacy",
+        "name": "The Medicine Shop",
+        "wheelchair": "limited"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5928718,
+          -19.9923814
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/5594495759",
+      "properties": {
+        "@id": "node/5594495759",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "For Me",
+        "shop": "clothes"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.578836,
+          -20.021114
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/5623646894",
+      "properties": {
+        "@id": "node/5623646894",
+        "addr:city": "Cap Malheureux",
+        "amenity": "pharmacy",
+        "dispensing": "yes",
+        "healthcare": "pharmacy",
+        "name": "Pharmacie Cap Malheureux"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.6168001,
+          -19.9879599
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/5741686222",
+      "properties": {
+        "@id": "node/5741686222",
+        "addr:housenumber": "29",
+        "addr:street": "Jardin Despeaux Street",
+        "amenity": "clinic",
+        "email": "naushad97@intnet.mu",
+        "internet_access": "wlan",
+        "name:en": "AFM dental & medical center",
+        "opening_hours": "Mo-Su 07:30-17:00",
+        "operator": "Fatehmamode",
+        "phone": "57869795",
+        "website": "http://www.afmdentalclinic.com"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5170408,
+          -20.1562648
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/5981041612",
+      "properties": {
+        "@id": "node/5981041612",
+        "alt_name": "Pharmacie Helvetia",
+        "amenity": "pharmacy",
+        "dispensing": "yes",
+        "healthcare": "pharmacy",
+        "name": "Pharmacie Helvétia"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.525867,
+          -20.2248612
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/5981233804",
+      "properties": {
+        "@id": "node/5981233804",
+        "amenity": "pharmacy",
+        "name": "St Pierre Pharmacy"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5370026,
+          -20.2244748
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/5981235532",
+      "properties": {
+        "@id": "node/5981235532",
+        "amenity": "pharmacy",
+        "name": "Pharmachic"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5379894,
+          -20.2247366
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/6434088687",
+      "properties": {
+        "@id": "node/6434088687",
+        "addr:street": "Remy Ollier Avenue",
+        "amenity": "pharmacy",
+        "dispensing": "yes",
+        "healthcare": "pharmacy",
+        "name": "Pharmarcie Ollier"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.478329,
+          -20.250285
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/6518841515",
+      "properties": {
+        "@id": "node/6518841515",
+        "addr:street": "Grand River Road",
+        "amenity": "pharmacy",
+        "dispensing": "yes",
+        "healthcare": "pharmacy",
+        "name": "Pharmacie la confiance"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4689929,
+          -20.2180436
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/6579472786",
+      "properties": {
+        "@id": "node/6579472786",
+        "amenity": "clinic",
+        "contact:website": "https://viplaserclinic-mauritius.com/",
+        "healthcare": "clinic",
+        "healthcare:speciality": "aesthetic_medicine",
+        "name": "VIP Laser Clinic Med Spa"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4716014,
+          -20.2317954
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/6953678383",
+      "properties": {
+        "@id": "node/6953678383",
+        "amenity": "pharmacy",
+        "dispensing": "yes",
+        "healthcare": "pharmacy",
+        "name": "Pharmacity Mahebourg",
+        "wheelchair": "no"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.7060436,
+          -20.4087828
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/7254457015",
+      "properties": {
+        "@id": "node/7254457015",
+        "addr:street": "Ratsitatane Street",
+        "amenity": "pharmacy",
+        "dispensing": "yes",
+        "healthcare": "pharmacy",
+        "name": "Buckingham pharmacy"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4663153,
+          -20.2439206
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/8085300018",
+      "properties": {
+        "@id": "node/8085300018",
+        "addr:street": "Royal Rd 8em mile Triolet",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name:en": "Pharmacy Nundlall"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5508962,
+          -20.0629891
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/8091417974",
+      "properties": {
+        "@id": "node/8091417974",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.3840742,
+          -20.3275402
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/8093889424",
+      "properties": {
+        "@id": "node/8093889424",
+        "amenity": "hospital"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          63.3777187,
+          -19.7225923
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/8093933400",
+      "properties": {
+        "@id": "node/8093933400",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Pharmacie d'arcy",
+        "phone": "8321428"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          63.4211487,
+          -19.6815234
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/8093957212",
+      "properties": {
+        "@id": "node/8093957212",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Port mathurin Pharmacy"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          63.4235921,
+          -19.6803821
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/9263546065",
+      "properties": {
+        "@id": "node/9263546065",
+        "amenity": "pharmacy",
+        "drive_through": "no",
+        "healthcare": "pharmacy",
+        "name": "Healthland Pharmacy"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.6634487,
+          -20.0492405
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/9282312806",
+      "properties": {
+        "@id": "node/9282312806",
+        "amenity": "hospital",
+        "healthcare": "hospital",
+        "healthcare:speciality": "orthopaedics",
+        "name": "Princess Margaret Orthopaedic Centre",
+        "short_name": "PMOC",
+        "start_date": "1956"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4773386,
+          -20.2786876
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/9410624817",
+      "properties": {
+        "@id": "node/9410624817",
+        "addr:city": "Port Louis",
+        "addr:postcode": "11307",
+        "addr:street": "Caudan Waterfront",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Pharmalink"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4998754,
+          -20.1615707
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/10107550975",
+      "properties": {
+        "@id": "node/10107550975",
+        "addr:street": "Royal Road Curepipe",
+        "amenity": "pharmacy",
+        "dispensing": "yes",
+        "healthcare": "pharmacy",
+        "name": "Pharmacy Kestrel"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5258536,
+          -20.321101
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/10709155657",
+      "properties": {
+        "@id": "node/10709155657",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Central Pharmacy",
+        "opening_hours": "Mo-Sa 08:00-20:00; Su,PH 08:00-14:00",
+        "operator": "Bissonauth & Sons.",
+        "phone": "+230 265 5706"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5471729,
+          -20.0372945
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/10881738693",
+      "properties": {
+        "@id": "node/10881738693",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4989162,
+          -20.1637968
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/10913798499",
+      "properties": {
+        "@id": "node/10913798499",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4760148,
+          -20.2442886
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/10946046615",
+      "properties": {
+        "@id": "node/10946046615",
+        "amenity": "clinic",
+        "healthcare": "clinic",
+        "name": "Dr.Rameez Hussain Ophthalmologist"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4945108,
+          -20.2545287
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/11061520910",
+      "properties": {
+        "@id": "node/11061520910",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Flic-en-Flac Pharmacy"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.3687287,
+          -20.2794924
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/11138924989",
+      "properties": {
+        "@id": "node/11138924989",
+        "amenity": "clinic",
+        "healthcare": "clinic",
+        "name": "Cabinet médical Dr. Bholah"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5181996,
+          -20.323109
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/11243417143",
+      "properties": {
+        "@id": "node/11243417143",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Z-click pharmacy"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4889123,
+          -20.30057
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/11721879694",
+      "properties": {
+        "@id": "node/11721879694",
+        "amenity": "pharmacy",
+        "name": "Love Life Pharmacy",
+        "opening_hours": "Mo-Su 09:00-20:00"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.3682245,
+          -20.279163
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/12047294943",
+      "properties": {
+        "@id": "node/12047294943",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "name": "Circonstance Saint-Pierre Pharmacy"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5404035,
+          -20.2230329
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/13422296001",
+      "properties": {
+        "@id": "node/13422296001",
+        "amenity": "hospital",
+        "name": "Long Mountain Hospital"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5713108,
+          -20.1517941
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/13595382682",
+      "properties": {
+        "@id": "node/13595382682",
+        "amenity": "hospital",
+        "healthcare": "hospital",
+        "name": "Nuclear Medicine"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5922384,
+          -20.4051087
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/13849831854",
+      "properties": {
+        "@id": "node/13849831854",
+        "amenity": "hospital",
+        "healthcare": "hospital",
+        "healthcare:speciality": "ophthalmology",
+        "name": "New Moka Eye Hospital"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5012871,
+          -20.2342773
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/13853107038",
+      "properties": {
+        "@id": "node/13853107038",
+        "amenity": "hospital",
+        "healthcare": "hospital",
+        "name": "Artemis Cascavelle Hospital",
+        "website": "https://artemismauritius.mu/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4038405,
+          -20.276775
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/14073416469",
+      "properties": {
+        "@id": "node/14073416469",
+        "amenity": "pharmacy",
+        "healthcare": "pharmacy",
+        "phone": "+230 465 6192"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.4539045,
+          -20.2419821
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/14076750903",
+      "properties": {
+        "@id": "node/14076750903",
+        "amenity": "pharmacy",
+        "name": "Mont Lubin Pharmacy"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          63.4422545,
+          -19.705796
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "node/14111708301",
+      "properties": {
+        "@id": "node/14111708301",
+        "addr:street": "Higginson Street",
+        "amenity": "clinic",
+        "name": "clinic muller",
+        "opening_hours": "24/7"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          57.5303478,
+          -20.3165648
+        ]
+      }
+    }
+  ]
+}
