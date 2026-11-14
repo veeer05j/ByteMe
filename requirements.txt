@@ -1,7 +1,7 @@
 streamlit
 groq
 python-dotenv
-Set-Content -Path requirements.txt -Value @"
-streamlit
-pandas
-"@
+bcrypt
+pyotp
+qrcode[pil]
+cryptography

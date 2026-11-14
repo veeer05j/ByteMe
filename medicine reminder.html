@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#198754">
+  <title>Medicine Reminders</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 24px 16px;
+      font-family: Arial, sans-serif;
+      color: #26332d;
+      background: #f4f9f7;
+      line-height: 1.5;
+    }
+    .container { width: 100%; max-width: 760px; margin: 0 auto; }
+    header { margin-bottom: 22px; }
+    h1 { margin: 0 0 6px; color: #176b43; font-size: 1.8rem; }
+    .subtitle { margin: 0; color: #607168; }
+    .panel {
+      background: #fff;
+      border: 1px solid #e1ebe5;
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 18px;
+      box-shadow: 0 3px 12px rgba(30, 70, 48, .05);
+    }
+    h2 { margin: 0 0 16px; font-size: 1.2rem; }
+    label { display: block; margin: 12px 0 6px; font-weight: 600; }
+    input[type="text"], input[type="time"] {
+      width: 100%;
+      min-height: 44px;
+      padding: 10px 12px;
+      border: 1px solid #cbd9d0;
+      border-radius: 8px;
+      font: inherit;
+      background: #fff;
+    }
+    .check-row { display: flex; align-items: center; gap: 9px; margin: 14px 0; }
+    .check-row label { display: inline; margin: 0; font-weight: 400; }
+    button {
+      border: 0;
+      border-radius: 8px;
+      padding: 11px 15px;
+      min-height: 42px;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .primary { width: 100%; color: #fff; background: #198754; }
+    .primary:hover { background: #146c43; }
+    .remove { color: #a52a2a; background: #fff0f0; padding: 8px 11px; }
+    .medicine-list, .history-list { list-style: none; padding: 0; margin: 0; }
+    .medicine-item {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; padding: 13px 0; border-bottom: 1px solid #edf1ee;
+    }
+    .medicine-item:last-child { border-bottom: 0; }
+    .medicine-name { font-weight: 700; overflow-wrap: anywhere; }
+    .medicine-details { color: #607168; font-size: .93rem; }
+    .empty { color: #718078; margin: 0; }
+    .status { color: #607168; font-size: .88rem; margin: 12px 0 0; }
+    .history-list li { padding: 8px 0; border-bottom: 1px solid #edf1ee; }
+    .history-list li:last-child { border-bottom: 0; }
+    dialog {
+      width: min(92vw, 430px); border: 0; border-radius: 14px;
+      padding: 24px; box-shadow: 0 16px 50px rgba(0,0,0,.25);
+    }
+    dialog::backdrop { background: rgba(0,0,0,.48); }
+    dialog h2 { color: #176b43; }
+    #popupMessages { margin: 0 0 18px; padding-left: 20px; }
+    @media (max-width: 480px) {
+      body { padding: 18px 12px; }
+      .panel { padding: 16px; }
+      .medicine-item { align-items: flex-start; }
+      .remove { flex-shrink: 0; }
+      h1 { font-size: 1.55rem; }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <header>
+      <h1>💊 Medicine Reminders</h1>
+      <p class="subtitle">Add medicines and keep track of your reminder alerts.</p>
+    </header>
+
+    <section class="panel">
+      <h2>Add a Medicine</h2>
+      <form id="medicineForm">
+        <label for="medicineName">Medicine Name</label>
+        <input id="medicineName" type="text" placeholder="e.g. Aspirin" maxlength="100" required>
+
+        <label for="medicineTime">Time to take</label>
+        <input id="medicineTime" type="time" required>
+
+        <div class="check-row">
+          <input id="repeatDaily" type="checkbox">
+          <label for="repeatDaily">🔁 Repeat every day</label>
+        </div>
+
+        <button class="primary" type="submit">Add Medicine</button>
+      </form>
+      <p id="formMessage" class="status" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="panel">
+      <h2>Your Medicine Schedule</h2>
+      <ul id="medicineList" class="medicine-list"></ul>
+      <p id="emptySchedule" class="empty">No medicines added yet.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Alerts</h2>
+      <p id="lastChecked" class="status">Waiting for first check…</p>
+      <h2 style="margin-top:18px">Alert History</h2>
+      <ul id="historyList" class="history-list"></ul>
+      <p id="emptyHistory" class="empty">No alerts yet.</p>
+    </section>
+  </main>
+
+  <dialog id="reminderDialog">
+    <h2>💊 Medicine Reminder</h2>
+    <ul id="popupMessages"></ul>
+    <button id="dismissReminder" class="primary" type="button">✅ OK, I'll take it</button>
+  </dialog>
+
+  <script>
+    const STORAGE_KEY = "medicineReminders";
+    const HISTORY_KEY = "medicineReminderHistory";
+    const medicineForm = document.getElementById("medicineForm");
+    const medicineList = document.getElementById("medicineList");
+    const emptySchedule = document.getElementById("emptySchedule");
+    const historyList = document.getElementById("historyList");
+    const emptyHistory = document.getElementById("emptyHistory");
+    const formMessage = document.getElementById("formMessage");
+    const lastChecked = document.getElementById("lastChecked");
+    const reminderDialog = document.getElementById("reminderDialog");
+    const popupMessages = document.getElementById("popupMessages");
+
+    let reminders = loadData(STORAGE_KEY, []);
+    let history = loadData(HISTORY_KEY, []);
+    // Prevent the same reminder from firing repeatedly during the same minute.
+    let alertedThisMinute = new Set();
+
+    function loadData(key, fallback) {
+      try {
+        const value = JSON.parse(localStorage.getItem(key));
+        return Array.isArray(value) ? value : fallback;
+      } catch {
+        return fallback;
+      }
+    }
+
+    function saveData() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(reminders));
+      localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+    }
+
+    function renderReminders() {
+      medicineList.replaceChildren();
+      emptySchedule.hidden = reminders.length > 0;
+
+      reminders.forEach((medicine) => {
+        const item = document.createElement("li");
+        item.className = "medicine-item";
+
+        const details = document.createElement("div");
+        const name = document.createElement("div");
+        name.className = "medicine-name";
+        name.textContent = medicine.medicine;
+
+        const info = document.createElement("div");
+        info.className = "medicine-details";
+        info.textContent = `⏰ ${medicine.time} · ${medicine.repeatDaily ? "🔁 Daily" : "One-time"}`;
+
+        details.append(name, info);
+
+        const removeButton = document.createElement("button");
+        removeButton.className = "remove";
+        removeButton.type = "button";
+        removeButton.textContent = "❌ Remove";
+        removeButton.addEventListener("click", () => removeMedicine(medicine.id));
+
+        item.append(details, removeButton);
+        medicineList.append(item);
+      });
+    }
+
+    function renderHistory() {
+      historyList.replaceChildren();
+      emptyHistory.hidden = history.length > 0;
+
+      [...history].reverse().forEach((entry) => {
+        const item = document.createElement("li");
+        item.textContent = entry;
+        historyList.append(item);
+      });
+    }
+
+    medicineForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const medicine = document.getElementById("medicineName").value.trim();
+      const time = document.getElementById("medicineTime").value;
+      const repeatDaily = document.getElementById("repeatDaily").checked;
+
+      if (!medicine || !time) {
+        formMessage.textContent = "Please enter a medicine name and time.";
+        return;
+      }
+
+      reminders.push({
+        id: (crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random())),
+        medicine,
+        time,
+        repeatDaily,
+        createdDate: new Date().toISOString().slice(0, 10),
+        lastAlertDate: null
+      });
+
+      saveData();
+      renderReminders();
+      medicineForm.reset();
+      formMessage.textContent = `Added ${medicine} at ${time} (${repeatDaily ? "Daily" : "One-time"}).`;
+    });
+
+    function removeMedicine(id) {
+      reminders = reminders.filter((medicine) => medicine.id !== id);
+      saveData();
+      renderReminders();
+    }
+
+    function playReminderSound() {
+      // Browsers may block audio until the user has interacted with the page.
+      try {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) return;
+        const audioContext = new AudioContextClass();
+        const oscillator = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        oscillator.type = "sine";
+        oscillator.frequency.value = 880;
+        gain.gain.value = 0.12;
+        oscillator.connect(gain);
+        gain.connect(audioContext.destination);
+        oscillator.start();
+        oscillator.stop(audioContext.currentTime + 0.35);
+        oscillator.onended = () => audioContext.close();
+      } catch (error) {
+        console.warn("Reminder sound could not be played:", error);
+      }
+    }
+
+    function showReminder(messages) {
+      popupMessages.replaceChildren();
+      messages.forEach((message) => {
+        const item = document.createElement("li");
+        item.textContent = message;
+        popupMessages.append(item);
+      });
+
+      playReminderSound();
+
+      if (!reminderDialog.open) reminderDialog.showModal();
+
+      // Browser notifications are optional and require permission.
+      if ("Notification" in window && Notification.permission === "granted") {
+        messages.forEach((message) => new Notification("💊 Medicine Reminder", { body: message }));
+      }
+    }
+
+    document.getElementById("dismissReminder").addEventListener("click", () => {
+      reminderDialog.close();
+    });
+
+    async function requestNotificationPermission() {
+      if ("Notification" in window && Notification.permission === "default") {
+        try {
+          await Notification.requestPermission();
+        } catch (error) {
+          console.warn("Notification permission was not granted:", error);
+        }
+      }
+    }
+
+    // Request permission after the user's first interaction with the page.
+    document.addEventListener("pointerdown", requestNotificationPermission, { once: true });
+
+    function checkReminders() {
+      const now = new Date();
+      const currentTime = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+      const today = now.toISOString().slice(0, 10);
+      const minuteKey = `${today}-${currentTime}`;
+      const dueMessages = [];
+
+      if (!alertedThisMinute.has(minuteKey)) {
+        reminders.forEach((medicine) => {
+          const isDue = medicine.time === currentTime;
+          const isEligibleDate = medicine.repeatDaily || medicine.createdDate === today;
+          const notAlreadyAlertedToday = medicine.lastAlertDate !== today;
+
+          if (isDue && isEligibleDate && notAlreadyAlertedToday) {
+            dueMessages.push(`Time to take ${medicine.medicine}.`);
+            medicine.lastAlertDate = today;
+
+            if (!medicine.repeatDaily) {
+              medicine.removeAfterAlert = true;
+            }
+          }
+        });
+
+        if (dueMessages.length) {
+          alertedThisMinute.add(minuteKey);
+          const timestamp = now.toLocaleString();
+          dueMessages.forEach((message) => history.push(`${timestamp} — ${message}`));
+          // One-time reminders are removed after they have triggered.
+          reminders = reminders.filter((medicine) => !medicine.removeAfterAlert);
+          saveData();
+          renderReminders();
+          renderHistory();
+          showReminder(dueMessages);
+        }
+      }
+
+      // Keep the duplicate-prevention set small.
+      if (alertedThisMinute.size > 20) alertedThisMinute.clear();
+      lastChecked.textContent = `Last checked: ${now.toLocaleTimeString()}`;
+    }
+
+    renderReminders();
+    renderHistory();
+    checkReminders();
+    // Check every 10 seconds while this page is open.
+    setInterval(checkReminders, 10000);
+  </script>
+</body>
+</html>

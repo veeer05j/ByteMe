@@ -1,0 +1,1633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HealthSpace</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+:root{--blue:#1555d5;--blue2:#3479ed;--bg:#eef0f4;--ink:#20232a;--muted:#818995;--line:#e9edf3;--card:#fff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:Arial,Helvetica,sans-serif;color:var(--ink)}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.app{display:grid;grid-template-columns:260px minmax(0,1fr);min-height:100vh}
+aside{background:#fff;border-right:1px solid var(--line);padding:26px 18px;display:flex;flex-direction:column;gap:18px}
+.brand{font-size:26px;font-weight:800;color:var(--blue);margin:0 0 3px}
+.brand-sub{font-size:11px;letter-spacing:1.5px;color:#89919e}
+.side-label{font-size:11px;font-weight:700;letter-spacing:1px;color:#929aa7;margin:12px 8px 0}
+nav{display:grid;gap:7px}
+nav button{border:0;background:transparent;text-align:left;padding:12px 13px;border-radius:10px;color:#566171;font-weight:600}
+nav button.active,nav button:hover{background:#edf3ff;color:var(--blue)}
+main{padding:26px 32px 40px;max-width:1700px;width:100%;margin:auto}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;gap:16px}
+.crumb{font-size:12px;color:#7d8795}
+.topbar select{max-width:180px}
+h1{font-size:30px;margin:0 0 6px}
+.subtitle{font-size:14px;color:var(--muted);margin:0 0 22px}
+.grid{display:grid;gap:16px}
+.top-grid{grid-template-columns:1.05fr 1.45fr .9fr}
+.bottom-grid{grid-template-columns:1.05fr 1.25fr 1.1fr}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:17px;min-width:0;box-shadow:0 2px 8px #202a3a05}
+.card h3{font-size:16px;margin:0 0 14px}
+.card p{font-size:13px;color:#737d8c}
+.metric{background:#f6f8fc;border-radius:12px;padding:12px;margin:9px 0}
+.metric .label{font-size:12px;color:#737d8c}
+.metric .value{font-size:22px;font-weight:750;margin-top:5px}
+.weight-card{background:linear-gradient(135deg,#1555d5,#3479ed);color:white;padding:22px;border-radius:16px;min-height:145px}
+.weight-card .small{font-size:12px;opacity:.85}
+.weight-card .big{font-size:36px;font-weight:750;margin:12px 0 5px}
+.weight-card .description{font-size:12px;opacity:.85}
+.bmi-card{border:1px solid var(--line);border-radius:16px;padding:17px;margin-top:12px;background:white}
+.bmi-label{font-size:12px;color:#737d8c;font-weight:600}
+.bmi-value{font-size:32px;font-weight:750;color:var(--blue);margin:8px 0}
+.bmi-description{font-size:13px;color:#737d8c}
+.chart-wrap{height:245px;position:relative}
+.chart-wrap.small{height:170px}
+.section-title{font-size:18px;font-weight:700;margin:0 0 12px}
+.row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.row.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+label{display:block;font-size:13px;font-weight:600;color:#505a69;margin:0 0 7px}
+input,select,textarea{width:100%;padding:11px 12px;border:1px solid #dce1e9;border-radius:9px;background:white;color:#252a33;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px #1555d51a}
+textarea{min-height:90px;resize:vertical}
+.field{margin-bottom:15px}
+.btn{border:0;background:var(--blue);color:white;border-radius:9px;padding:11px 17px;font-weight:700}
+.btn:hover{background:#1047b7}
+.btn.secondary{background:#edf3ff;color:var(--blue)}
+.btn.danger{background:#c93636}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.notice{padding:12px 14px;border-radius:10px;background:#edf3ff;color:#234d9b;font-size:13px;margin:12px 0}
+.notice.error{background:#fff0f0;color:#a32323}
+.notice.success{background:#edfaf1;color:#176b37}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:11px 9px;border-bottom:1px solid #edf0f4;white-space:nowrap}
+th{color:#697485;background:#f8f9fb;font-size:12px}
+td{color:#3e4652}
+.table-scroll{overflow:auto;border:1px solid var(--line);border-radius:12px}
+.profile-form{display:grid;gap:12px}
+.profile-form .field{margin:0}
+.goal-form{display:grid;gap:11px}
+hr{border:0;border-top:1px solid var(--line);margin:14px 0}
+.hidden{display:none!important}
+.muted{color:var(--muted);font-size:12px}
+.page{display:none}
+.page.active{display:block}
+
+@media(max-width:1100px){
+    .top-grid,.bottom-grid{grid-template-columns:1fr 1fr}
+    .app{grid-template-columns:220px minmax(0,1fr)}
+}
+
+@media(max-width:760px){
+    .app{display:block}
+    aside{position:static;padding:15px}
+    nav{grid-template-columns:repeat(2,1fr)}
+    main{padding:20px 14px}
+    .top-grid,.bottom-grid{grid-template-columns:1fr}
+    .row{grid-template-columns:1fr}
+    .row.two{grid-template-columns:1fr}
+    .topbar{align-items:flex-start;flex-direction:column}
+    h1{font-size:25px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<aside>
+    <div>
+        <div class="brand">✣ HealthSpace</div>
+        <div class="brand-sub">PERSONAL WELLBEING</div>
+    </div>
+
+    <hr>
+
+    <div class="side-label">NAVIGATION</div>
+
+    <nav id="navigation">
+        <button class="active" data-page="overview">⌂ &nbsp; Overview</button>
+        <button data-page="add">＋ &nbsp; Add measurements</button>
+        <button data-page="trends">▥ &nbsp; Health trends</button>
+        <button data-page="history">▤ &nbsp; Health history</button>
+    </nav>
+
+    <hr>
+
+    <h3 style="margin:0;font-size:16px">Personal Profile</h3>
+
+    <form id="profileForm" class="profile-form">
+
+        <div class="field">
+            <label for="gender">Gender</label>
+            <select id="gender">
+                <option>Prefer not to say</option>
+                <option>Male</option>
+                <option>Female</option>
+                <option>Other</option>
+            </select>
+        </div>
+
+        <div class="field">
+            <label for="height">Height (cm)</label>
+            <input id="height" type="number" min="50" max="250" step=".5" placeholder="Enter your height">
+        </div>
+
+        <button class="btn" type="submit">Save Profile</button>
+    </form>
+
+    <div id="profileMessage" class="muted"></div>
+
+    <hr>
+
+    <h3 style="margin:0;font-size:16px">Personal Goals</h3>
+
+    <div class="goal-form">
+
+        <div class="field">
+            <label for="waterGoal">Water goal (L)</label>
+            <input id="waterGoal" type="number" min=".1" max="10" step=".1" value="2">
+        </div>
+
+        <div class="field">
+            <label for="sleepGoal">Sleep goal (hours)</label>
+            <input id="sleepGoal" type="number" min=".5" max="24" step=".5" value="8">
+        </div>
+
+        <div class="field">
+            <label for="activityGoal">Activity goal (minutes)</label>
+            <input id="activityGoal" type="number" min="1" max="1440" step="5" value="30">
+        </div>
+
+    </div>
+
+    <div class="muted">HealthSpace • Browser prototype</div>
+</aside>
+
+<main>
+
+    <div class="topbar">
+        <div class="crumb" id="breadcrumb">HOME / OVERVIEW</div>
+
+        <select id="period" aria-label="Dashboard period">
+            <option>Last 7 days</option>
+            <option selected>Last 30 days</option>
+            <option>Last 90 days</option>
+            <option>All records</option>
+        </select>
+    </div>
+
+    <!-- OVERVIEW PAGE -->
+
+    <section id="overview" class="page active">
+
+        <h1>Take Care Of Your Health Easily</h1>
+        <p class="subtitle">Your personal health and daily wellbeing dashboard</p>
+
+        <div class="grid top-grid">
+
+            <div class="grid">
+
+                <div class="card">
+                    <h3>♥ Blood Pressure Statistics</h3>
+                    <div class="chart-wrap small">
+                        <canvas id="bpChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>💧 Hydration Level</h3>
+                    <div class="chart-wrap small">
+                        <canvas id="waterChart"></canvas>
+                    </div>
+                    <p id="waterCaption">Your daily water intake</p>
+                </div>
+
+            </div>
+
+            <div class="card">
+                <h3>▥ Tracking Consistency</h3>
+
+                <div class="chart-wrap">
+                    <canvas id="consistencyChart"></canvas>
+                </div>
+
+                <div class="metric">
+                    <div class="label">Days with entries this week</div>
+                    <div class="value" id="loggedDays">0/7</div>
+                </div>
+            </div>
+
+            <div>
+
+                <div id="weightCard" class="weight-card">
+                    <div class="small">⚖ WEIGHT OVERVIEW</div>
+                    <div class="big">—</div>
+                    <div class="description">No weight recorded yet</div>
+                </div>
+
+                <div class="bmi-card">
+                    <div class="bmi-label">BMI OVERVIEW</div>
+                    <div class="bmi-value" id="bmiValue">—</div>
+                    <div class="bmi-description" id="bmiCategory">
+                        Enter your height and record your weight
+                    </div>
+                </div>
+
+                <p class="muted">BMI is an adult screening measure, not a medical diagnosis.</p>
+
+            </div>
+
+        </div>
+
+        <br>
+
+        <div class="grid bottom-grid">
+
+            <div class="card">
+                <h3>☀ Daily Wellbeing</h3>
+                <p>Your most recent recorded daily measurements.</p>
+
+                <div class="metric">
+                    <div class="label">Gender</div>
+                    <div class="value" id="overviewGender">Prefer not to say</div>
+                </div>
+
+                <div class="metric">
+                    <div class="label">Height</div>
+                    <div class="value" id="overviewHeight">Not recorded</div>
+                </div>
+
+                <div class="metric">
+                    <div class="label">Sleep</div>
+                    <div class="value" id="overviewSleep">Not recorded</div>
+                </div>
+
+                <div class="metric">
+                    <div class="label">Physical activity</div>
+                    <div class="value" id="overviewActivity">Not recorded</div>
+                </div>
+
+                <div class="metric">
+                    <div class="label">Water intake</div>
+                    <div class="value" id="overviewWater">Not recorded</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>🏃 Physical Activity</h3>
+                <div class="chart-wrap">
+                    <canvas id="activityChart"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>☾ Sleep History</h3>
+                <div class="chart-wrap">
+                    <canvas id="sleepChart"></canvas>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ADD MEASUREMENTS PAGE -->
+
+    <section id="add" class="page">
+
+        <h1>Add Health Measurements</h1>
+        <p class="subtitle">Record your latest measurements and daily wellbeing.</p>
+
+        <div class="card">
+
+            <form id="entryForm">
+
+                <div class="field">
+                    <label for="recordDate">Date</label>
+                    <input id="recordDate" type="date" required>
+                </div>
+
+                <h3>Body Measurements</h3>
+
+                <div class="row">
+
+                    <div class="field">
+                        <label for="weight">Weight (kg)</label>
+                        <input id="weight" type="number" min=".1" max="500" step=".1" placeholder="Not recorded">
+                    </div>
+
+                    <div class="field">
+                        <label for="systolic">Systolic pressure (mmHg)</label>
+                        <input id="systolic" type="number" min="1" max="300" placeholder="Not recorded">
+                    </div>
+
+                    <div class="field">
+                        <label for="diastolic">Diastolic pressure (mmHg)</label>
+                        <input id="diastolic" type="number" min="1" max="200" placeholder="Not recorded">
+                    </div>
+
+                </div>
+
+                <h3>Other Measurements</h3>
+
+                <div class="row">
+
+                    <div class="field">
+                        <label for="heartRate">Heart rate (bpm)</label>
+                        <input id="heartRate" type="number" min="1" max="250" placeholder="Not recorded">
+                    </div>
+
+                    <div class="field">
+                        <label for="glucose">Blood glucose (mmol/L)</label>
+                        <input id="glucose" type="number" min=".1" max="60" step=".1" placeholder="Not recorded">
+                    </div>
+
+                    <div class="field">
+                        <label for="water">Water intake (L)</label>
+                        <input id="water" type="number" min="0" max="20" step=".1" placeholder="Not recorded">
+                    </div>
+
+                </div>
+
+                <h3>Daily Wellbeing</h3>
+
+                <div class="row two">
+
+                    <div class="field">
+                        <label for="sleep">Sleep duration (hours)</label>
+                        <input id="sleep" type="number" min="0" max="24" step=".5" placeholder="Not recorded">
+                    </div>
+
+                    <div class="field">
+                        <label for="activity">Physical activity (minutes)</label>
+                        <input id="activity" type="number" min="0" max="1440" step="5" placeholder="Not recorded">
+                    </div>
+
+                </div>
+
+                <div class="field">
+                    <label for="notes">Additional notes</label>
+                    <textarea id="notes" maxlength="500" placeholder="Add any relevant notes..."></textarea>
+                </div>
+
+                <div id="entryMessage"></div>
+
+                <div class="actions">
+                    <button class="btn" type="submit">Save Health Record</button>
+                    <button class="btn secondary" type="reset">Clear form</button>
+                </div>
+
+            </form>
+
+        </div>
+
+    </section>
+
+    <!-- HEALTH TRENDS PAGE -->
+
+    <section id="trends" class="page">
+
+        <h1>Health Analytics</h1>
+        <p class="subtitle">Explore your recorded health measurements over time.</p>
+
+        <div class="grid" style="grid-template-columns:repeat(2,minmax(0,1fr))" id="trendGrid">
+
+            <div class="card">
+                <h3>♥ Blood Pressure Statistics</h3>
+                <div class="chart-wrap">
+                    <canvas id="trendBP"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Heart Rate History</h3>
+                <div class="chart-wrap">
+                    <canvas id="trendHR"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Weight History</h3>
+                <div class="chart-wrap">
+                    <canvas id="trendWeight"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Blood Glucose History</h3>
+                <div class="chart-wrap">
+                    <canvas id="trendGlucose"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>BMI History</h3>
+                <div class="chart-wrap">
+                    <canvas id="trendBMI"></canvas>
+                </div>
+                <p class="muted">Historical BMI is calculated using your current saved height.</p>
+            </div>
+
+            <div class="card">
+                <h3>Sleep History</h3>
+                <div class="chart-wrap">
+                    <canvas id="trendSleep"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Physical Activity</h3>
+                <div class="chart-wrap">
+                    <canvas id="trendActivity"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Hydration History</h3>
+                <div class="chart-wrap">
+                    <canvas id="trendWater"></canvas>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- HEALTH HISTORY PAGE -->
+
+    <section id="history" class="page">
+
+        <h1>Health History</h1>
+        <p class="subtitle">Review, search, export and delete your saved health records.</p>
+
+        <div class="card">
+
+            <h3>Filter records</h3>
+
+            <div class="row two">
+
+                <div class="field">
+                    <label for="fromDate">From</label>
+                    <input type="date" id="fromDate">
+                </div>
+
+                <div class="field">
+                    <label for="toDate">To</label>
+                    <input type="date" id="toDate">
+                </div>
+
+            </div>
+
+            <div class="field">
+                <label for="search">Search health records</label>
+                <input id="search" type="search" placeholder="Search notes or measurements...">
+            </div>
+
+            <h3>Recorded Measurements</h3>
+            <div id="historyTable" class="table-scroll"></div>
+
+            <div class="actions">
+                <button class="btn secondary" id="downloadCSV">Download CSV</button>
+            </div>
+
+        </div>
+
+        <br>
+
+        <div class="card">
+
+            <h3>Delete a health record</h3>
+
+            <div class="row two">
+
+                <div class="field">
+                    <label for="deleteId">Select record</label>
+                    <select id="deleteId"></select>
+                </div>
+
+                <div class="field" style="align-self:end">
+                    <label>
+                        <input id="confirmDelete" type="checkbox" style="width:auto;margin-right:7px">
+                        Confirm deletion
+                    </label>
+
+                    <button class="btn danger" id="deleteRecord" disabled>
+                        Delete record
+                    </button>
+                </div>
+
+            </div>
+
+            <div id="deleteMessage" class="muted"></div>
+
+        </div>
+
+    </section>
+
+</main>
+</div>
+
+<script>
+
+// DATABASE CONFIGURATION
+
+const DB_NAME = 'HealthSpaceDB';
+const DB_VERSION = 1;
+
+let db;
+let records = [];
+
+let profile = {
+    gender: 'Prefer not to say',
+    height_cm: null
+};
+
+const charts = {};
+
+const $ = id => document.getElementById(id);
+
+const today = () => new Date().toISOString().slice(0,10);
+
+$('recordDate').value = today();
+
+
+// DATABASE INITIALISATION
+
+function openDB() {
+
+    return new Promise((resolve, reject) => {
+
+        const req = indexedDB.open(DB_NAME, DB_VERSION);
+
+        req.onupgradeneeded = () => {
+
+            const d = req.result;
+
+            if (!d.objectStoreNames.contains('health_records')) {
+
+                const s = d.createObjectStore('health_records', {
+                    keyPath: 'id',
+                    autoIncrement: true
+                });
+
+                s.createIndex('record_date', 'record_date');
+
+            }
+
+            if (!d.objectStoreNames.contains('user_profile')) {
+                d.createObjectStore('user_profile', {
+                    keyPath: 'user_id'
+                });
+            }
+
+        };
+
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+
+    });
+
+}
+
+
+// DATABASE TRANSACTIONS
+
+function tx(store, mode = 'readonly') {
+    return db.transaction(store, mode).objectStore(store);
+}
+
+
+function getAll() {
+
+    return new Promise((resolve, reject) => {
+
+        const r = tx('health_records').getAll();
+
+        r.onsuccess = () => resolve(
+            r.result.sort((a,b) =>
+                a.record_date.localeCompare(b.record_date) || a.id-b.id
+            )
+        );
+
+        r.onerror = () => reject(r.error);
+
+    });
+
+}
+
+
+function getProfile() {
+
+    return new Promise(resolve => {
+
+        const r = tx('user_profile').get('local_prototype');
+
+        r.onsuccess = () => resolve(r.result || profile);
+        r.onerror = () => resolve(profile);
+
+    });
+
+}
+
+
+function saveProfile() {
+
+    return new Promise((resolve, reject) => {
+
+        const r = tx('user_profile','readwrite').put({
+            user_id: 'local_prototype',
+            gender: profile.gender,
+            height_cm: profile.height_cm
+        });
+
+        r.onsuccess = resolve;
+        r.onerror = () => reject(r.error);
+
+    });
+
+}
+
+
+function saveRecord(data) {
+
+    return new Promise((resolve, reject) => {
+
+        const r = tx('health_records','readwrite').add(data);
+
+        r.onsuccess = resolve;
+        r.onerror = () => reject(r.error);
+
+    });
+
+}
+
+
+function removeRecord(id) {
+
+    return new Promise((resolve, reject) => {
+
+        const r = tx('health_records','readwrite').delete(Number(id));
+
+        r.onsuccess = resolve;
+        r.onerror = () => reject(r.error);
+
+    });
+
+}
+
+
+// HELPER FUNCTIONS
+
+function num(id) {
+
+    const v = $(id).value;
+
+    return v === '' ? null : Number(v);
+
+}
+
+
+function bmi(weight, height) {
+
+    return weight && height > 0
+        ? weight / ((height / 100) ** 2)
+        : null;
+
+}
+
+
+function bmiLabel(v) {
+
+    return v === null
+        ? 'Not available'
+        : v < 18.5
+            ? 'Underweight'
+            : v < 25
+                ? 'Normal weight'
+                : v < 30
+                    ? 'Overweight'
+                    : 'Obesity';
+
+}
+
+
+function latest(col) {
+
+    const a = records.filter(
+        r => r[col] !== null && r[col] !== undefined
+    );
+
+    return a.length ? a[a.length - 1] : null;
+
+}
+
+
+function filtered() {
+
+    const p = $('period').value;
+
+    if (p === 'All records') {
+        return records;
+    }
+
+    const n = Number(p.match(/\d+/)[0]);
+
+    const start = new Date();
+    start.setDate(start.getDate() - (n - 1));
+
+    const s = start.toISOString().slice(0,10);
+
+    return records.filter(r => r.record_date >= s);
+
+}
+
+
+function recent(col, n = 7) {
+
+    return records
+        .filter(r => r[col] !== null && r[col] !== undefined)
+        .slice(-n);
+
+}
+
+
+// CHART FUNCTIONS
+
+function makeChart(id, type, labels, datasets, opts = {}) {
+
+    if (charts[id]) {
+        charts[id].destroy();
+    }
+
+    const el = $(id);
+
+    if (!el) {
+        return;
+    }
+
+    charts[id] = new Chart(el, {
+
+        type,
+
+        data: {
+            labels,
+            datasets
+        },
+
+        options: {
+
+            responsive: true,
+            maintainAspectRatio: false,
+
+            plugins: {
+                legend: {
+                    display: opts.legend || false
+                },
+                tooltip: {
+                    enabled: true
+                }
+            },
+
+            scales: {
+
+                x: {
+                    grid: {
+                        display: false
+                    }
+                },
+
+                y: {
+                    beginAtZero: opts.zero ?? false,
+                    grid: {
+                        color: '#edf0f4'
+                    },
+                    title: {
+                        display: !!opts.y,
+                        title: opts.y || ''
+                    }
+                }
+
+            },
+
+            ...opts.options
+
+        }
+
+    });
+
+}
+
+
+function lineSet(label, data, color = '#1555d5') {
+
+    return {
+        label,
+        data,
+        borderColor: color,
+        backgroundColor: color,
+        tension: .35,
+        pointRadius: 3,
+        borderWidth: 2,
+        fill: false
+    };
+
+}
+
+
+function barSet(label, data, color = '#1555d5') {
+
+    return {
+        label,
+        data,
+        backgroundColor: color,
+        borderRadius: 5
+    };
+
+}
+
+
+function labels(data) {
+
+    return data.map(r =>
+        new Date(r.record_date + 'T00:00:00').toLocaleDateString(
+            'en-GB',
+            {
+                day: '2-digit',
+                month: 'short'
+            }
+        )
+    );
+
+}
+
+
+// MAIN RENDER FUNCTION
+
+function render() {
+
+    records = records.slice().sort(
+        (a,b) =>
+            a.record_date.localeCompare(b.record_date) || a.id-b.id
+    );
+
+    renderOverview();
+    renderTrends();
+    renderHistory();
+
+}
+
+
+// OVERVIEW DASHBOARD
+
+function renderOverview() {
+
+    const data = filtered();
+
+    const bp = data
+        .filter(r => r.systolic !== null && r.diastolic !== null)
+        .slice(-10);
+
+    const bpLabels = labels(bp);
+
+    makeChart(
+        'bpChart',
+        'line',
+        bpLabels,
+        [
+            lineSet('Systolic', bp.map(r => r.systolic)),
+            lineSet('Diastolic', bp.map(r => r.diastolic), '#55a5ed')
+        ],
+        {
+            legend: true,
+            y: 'mmHg'
+        }
+    );
+
+
+    // HYDRATION CHART
+
+    const water = latest('water_l');
+
+    const w = water ? water.water_l : 0;
+
+    const goal = Number($('waterGoal').value) || 2;
+
+    makeChart(
+        'waterChart',
+        'doughnut',
+        ['Consumed', 'Remaining'],
+        [
+            {
+                data: [
+                    Math.min(w, goal),
+                    Math.max(goal - Math.min(w, goal), 0.001)
+                ],
+                backgroundColor: ['#1555d5', '#edf0f5'],
+                borderWidth: 0,
+                circumference: 270,
+                rotation: 225,
+                cutout: '78%'
+            }
+        ],
+        {
+            options: {
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        enabled: true
+                    }
+                }
+            }
+        }
+    );
+
+    $('waterCaption').textContent =
+        `Today's recorded intake: ${w.toFixed(1)} L | Your chosen goal: ${goal.toFixed(1)} L`;
+
+
+    // TRACKING CONSISTENCY
+
+    const days = [];
+    const counts = [];
+
+    for (let i = 4; i >= 0; i--) {
+
+        const end = new Date();
+
+        end.setDate(end.getDate() - i * 7);
+
+        const start = new Date(end);
+
+        start.setDate(start.getDate() - 6);
+
+        days.push(
+            start.toLocaleDateString(
+                'en-GB',
+                {
+                    day: '2-digit',
+                    month: 'short'
+                }
+            )
+        );
+
+        counts.push(
+            new Set(
+                records.filter(r => {
+
+                    const d = new Date(r.record_date + 'T00:00:00');
+
+                    return d >= start && d <= end;
+
+                }).map(r => r.record_date)
+            ).size
+        );
+
+    }
+
+    makeChart(
+        'consistencyChart',
+        'bar',
+        days,
+        [
+            barSet(
+                'Days logged',
+                counts.map((v,i) => ({x:days[i],y:v})).map(x => x.y)
+            )
+        ],
+        {
+            zero: true
+        }
+    );
+
+
+    // WEIGHT OVERVIEW
+
+    const wt = latest('weight_kg');
+
+    const prev = records
+        .filter(r => r.weight_kg !== null)
+        .slice(-2);
+
+    let desc = 'No weight recorded yet';
+
+    if (wt) {
+
+        desc = prev.length > 1
+            ? `${(prev[1].weight_kg - prev[0].weight_kg) >= 0 ? '+' : ''}${(prev[1].weight_kg - prev[0].weight_kg).toFixed(1)} kg compared with previous entry`
+            : 'Latest recorded measurement';
+
+    }
+
+    $('weightCard').innerHTML = `
+        <div class="small">⚖ WEIGHT OVERVIEW</div>
+        <div class="big">${wt ? wt.weight_kg.toFixed(1) + ' kg' : '—'}</div>
+        <div class="description">${desc}</div>
+    `;
+
+
+    // BMI OVERVIEW
+
+    const b = wt
+        ? bmi(wt.weight_kg, profile.height_cm)
+        : null;
+
+    $('bmiValue').textContent = b ? b.toFixed(1) : '—';
+
+    $('bmiCategory').textContent = b
+        ? bmiLabel(b)
+        : 'Enter your height and record your weight';
+
+
+    // LOGGED DAYS
+
+    const recentDays = new Set(
+        records.filter(
+            r => r.record_date >= new Date(Date.now() - 6 * 86400000)
+                .toISOString().slice(0,10)
+        ).map(r => r.record_date)
+    );
+
+    $('loggedDays').textContent = `${recentDays.size}/7`;
+
+
+    // DAILY WELLBEING
+
+    $('overviewGender').textContent =
+        profile.gender || 'Prefer not to say';
+
+    $('overviewHeight').textContent =
+        profile.height_cm
+            ? `${Number(profile.height_cm).toFixed(1)} cm`
+            : 'Not recorded';
+
+
+    const s = latest('sleep_hours');
+    const a = latest('activity_minutes');
+
+    $('overviewSleep').textContent =
+        s ? `${s.sleep_hours.toFixed(1)} hours` : 'Not recorded';
+
+    $('overviewActivity').textContent =
+        a ? `${a.activity_minutes} minutes` : 'Not recorded';
+
+    $('overviewWater').textContent =
+        water ? `${water.water_l.toFixed(1)} L` : 'Not recorded';
+
+
+    // ACTIVITY AND SLEEP CHARTS
+
+    const act = recent('activity_minutes');
+    const sl = recent('sleep_hours');
+
+    makeChart(
+        'activityChart',
+        'bar',
+        labels(act),
+        [
+            barSet('Minutes', act.map(r => r.activity_minutes))
+        ],
+        {
+            zero: true,
+            y: 'Minutes'
+        }
+    );
+
+    makeChart(
+        'sleepChart',
+        'bar',
+        labels(sl),
+        [
+            barSet('Hours', sl.map(r => r.sleep_hours))
+        ],
+        {
+            zero: true,
+            y: 'Hours'
+        }
+    );
+
+}
+
+
+// HEALTH TRENDS
+
+function renderTrends() {
+
+    const specs = [
+
+        ['trendHR', 'heart_rate', 'heart_rate_bpm', 'Heart rate', 'bpm'],
+        ['trendWeight', 'weight_kg', 'weight_kg', 'Weight', 'kg'],
+        ['trendGlucose', 'glucose_mmol_l', 'glucose_mmol_l', 'Glucose', 'mmol/L'],
+        ['trendSleep', 'sleep_hours', 'sleep_hours', 'Sleep', 'hours'],
+        ['trendActivity', 'activity_minutes', 'activity_minutes', 'Activity', 'minutes'],
+        ['trendWater', 'water_l', 'water_l', 'Water', 'L']
+
+    ];
+
+    const bp = records
+        .filter(r => r.systolic !== null && r.diastolic !== null)
+        .slice(-20);
+
+    makeChart(
+        'trendBP',
+        'line',
+        labels(bp),
+        [
+            lineSet('Systolic', bp.map(r => r.systolic)),
+            lineSet('Diastolic', bp.map(r => r.diastolic), '#55a5ed')
+        ],
+        {
+            legend: true,
+            y: 'mmHg'
+        }
+    );
+
+
+    for (const [id, , key, name, unit] of specs) {
+
+        const a = records
+            .filter(r => r[key] !== null)
+            .slice(-20);
+
+        makeChart(
+            id,
+            'line',
+            labels(a),
+            [
+                lineSet(name, a.map(r => r[key]))
+            ],
+            {
+                y: unit
+            }
+        );
+
+    }
+
+
+    // BMI HISTORY
+
+    const b = records.filter(
+        r => r.weight_kg !== null && profile.height_cm
+    ).slice(-20);
+
+    makeChart(
+        'trendBMI',
+        'line',
+        labels(b),
+        [
+            lineSet(
+                'BMI',
+                b.map(r => bmi(r.weight_kg, profile.height_cm))
+            )
+        ],
+        {
+            y: 'BMI'
+        }
+    );
+
+}
+
+
+// HEALTH HISTORY
+
+function renderHistory() {
+
+    const min = $('fromDate').value;
+    const max = $('toDate').value;
+    const q = $('search').value.toLowerCase();
+
+    let a = records.slice().reverse().filter(r =>
+
+        (!min || r.record_date >= min) &&
+        (!max || r.record_date <= max) &&
+        (!q || Object.values(r).join(' ').toLowerCase().includes(q))
+
+    );
+
+
+    const cols = [
+
+        ['record_date', 'Date'],
+        ['weight_kg', 'Weight (kg)'],
+        ['bmi', 'BMI'],
+        ['systolic', 'Systolic (mmHg)'],
+        ['diastolic', 'Diastolic (mmHg)'],
+        ['heart_rate', 'Heart rate (bpm)'],
+        ['glucose_mmol_l', 'Glucose (mmol/L)'],
+        ['water_l', 'Water (L)'],
+        ['sleep_hours', 'Sleep (hours)'],
+        ['activity_minutes', 'Activity (minutes)'],
+        ['notes', 'Notes']
+
+    ];
+
+
+    const fmt = (r,k) => {
+
+        if (k === 'bmi') {
+
+            const v = bmi(r.weight_kg, profile.height_cm);
+
+            return v ? v.toFixed(1) : '—';
+
+        }
+
+        const v = r[k];
+
+        return v === null || v === undefined || v === ''
+            ? '—'
+            : v;
+
+    };
+
+
+    $('historyTable').innerHTML = a.length
+
+        ? `
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        ${cols.map(c => `<th>${c[1]}</th>`).join('')}
+                    </tr>
+                </thead>
+
+                <tbody>
+                    ${a.map(r => `
+                        <tr>
+                            <td>${r.id}</td>
+                            ${cols.map(c =>
+                                `<td>${escapeHTML(String(fmt(r,c[0])))}</td>`
+                            ).join('')}
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        `
+
+        : '<p style="padding:12px">No records match your selected filters.</p>';
+
+
+    // DELETE RECORD DROPDOWN
+
+    $('deleteId').innerHTML = records.slice().reverse().map(r =>
+
+        `<option value="${r.id}">#${r.id} — ${r.record_date}</option>`
+
+    ).join('');
+
+
+    $('deleteRecord').disabled =
+        !records.length || !$('confirmDelete').checked;
+
+}
+
+
+// HTML ESCAPING
+
+function escapeHTML(s) {
+
+    return s.replace(/[&<>"']/g, c => ({
+
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+
+    }[c]));
+
+}
+
+
+// NAVIGATION
+
+function showPage(name) {
+
+    document.querySelectorAll('.page').forEach(p => {
+
+        p.classList.toggle('active', p.id === name);
+
+    });
+
+    document.querySelectorAll('nav button').forEach(b => {
+
+        b.classList.toggle('active', b.dataset.page === name);
+
+    });
+
+    $('breadcrumb').textContent =
+        'HOME / ' + name.toUpperCase().replaceAll('_', ' ');
+
+    $('period').classList.toggle(
+        'hidden',
+        !['overview', 'trends'].includes(name)
+    );
+
+    if (name === 'trends') {
+        renderTrends();
+    }
+
+}
+
+
+document.querySelectorAll('nav button').forEach(b => {
+
+    b.addEventListener('click', () => showPage(b.dataset.page));
+
+});
+
+
+// SAVE PROFILE
+
+$('profileForm').addEventListener('submit', async e => {
+
+    e.preventDefault();
+
+    profile.gender = $('gender').value;
+    profile.height_cm = num('height');
+
+    if (profile.height_cm === null || profile.height_cm <= 0) {
+
+        $('profileMessage').textContent = 'Please enter a valid height.';
+
+        return;
+
+    }
+
+    await saveProfile();
+
+    $('profileMessage').textContent = 'Profile saved successfully.';
+
+    render();
+
+});
+
+
+// SAVE HEALTH RECORD
+
+$('entryForm').addEventListener('submit', async e => {
+
+    e.preventDefault();
+
+    const systolic = num('systolic');
+    const diastolic = num('diastolic');
+
+    const fields = [
+        'weight',
+        'heartRate',
+        'glucose',
+        'water',
+        'sleep',
+        'activity'
+    ];
+
+    const values = fields.map(num);
+
+
+    // BLOOD PRESSURE VALIDATION
+
+    if ((systolic === null) !== (diastolic === null)) {
+
+        $('entryMessage').innerHTML =
+            '<div class="notice error">Enter both systolic and diastolic pressure.</div>';
+
+        return;
+
+    }
+
+
+    if (systolic !== null && systolic <= diastolic) {
+
+        $('entryMessage').innerHTML =
+            '<div class="notice error">Systolic pressure must be greater than diastolic pressure.</div>';
+
+        return;
+
+    }
+
+
+    // CHECK THAT AT LEAST ONE MEASUREMENT EXISTS
+
+    if (values.every(v => v === null) && systolic === null) {
+
+        $('entryMessage').innerHTML =
+            '<div class="notice error">Enter at least one measurement.</div>';
+
+        return;
+
+    }
+
+
+    // PREPARE RECORD
+
+    const data = {
+
+        record_date: $('recordDate').value,
+
+        weight_kg: values[0],
+
+        systolic,
+
+        diastolic,
+
+        heart_rate: values[1],
+
+        glucose_mmol_l: values[2],
+
+        water_l: values[3],
+
+        sleep_hours: values[4],
+
+        activity_minutes: values[5],
+
+        notes: $('notes').value,
+
+        created_at: new Date().toISOString()
+
+    };
+
+
+    // SAVE TO INDEXEDDB
+
+    try {
+
+        await saveRecord(data);
+
+        records = await getAll();
+
+        $('entryMessage').innerHTML =
+            '<div class="notice success">Your health record has been saved.</div>';
+
+        e.target.reset();
+
+        $('recordDate').value = today();
+
+        render();
+
+    } catch(err) {
+
+        $('entryMessage').innerHTML =
+            '<div class="notice error">Unable to save record: ' +
+            escapeHTML(err.message) +
+            '</div>';
+
+    }
+
+});
+
+
+// DASHBOARD PERIOD AND GOALS
+
+$('period').addEventListener('change', render);
+
+['waterGoal', 'sleepGoal', 'activityGoal'].forEach(id => {
+
+    $(id).addEventListener('change', render);
+
+});
+
+
+// HISTORY FILTERS
+
+['fromDate', 'toDate', 'search'].forEach(id => {
+
+    $(id).addEventListener('input', renderHistory);
+
+});
+
+
+// DELETE CONFIRMATION
+
+$('confirmDelete').addEventListener('change', renderHistory);
+
+
+// DELETE RECORD
+
+$('deleteRecord').addEventListener('click', async () => {
+
+    const id = $('deleteId').value;
+
+    if (!id || !$('confirmDelete').checked) {
+        return;
+    }
+
+    await removeRecord(id);
+
+    records = await getAll();
+
+    $('deleteMessage').textContent = 'Record deleted successfully.';
+
+    $('confirmDelete').checked = false;
+
+    render();
+
+});
+
+
+// EXPORT CSV
+
+$('downloadCSV').addEventListener('click', () => {
+
+    const cols = [
+
+        'id',
+        'record_date',
+        'weight_kg',
+        'systolic',
+        'diastolic',
+        'heart_rate',
+        'glucose_mmol_l',
+        'water_l',
+        'sleep_hours',
+        'activity_minutes',
+        'notes'
+
+    ];
+
+    const rows = [
+
+        cols.join(','),
+
+        ...records.map(r =>
+
+            cols.map(k =>
+
+                '"' + String(r[k] ?? '').replaceAll('"', '""') + '"'
+
+            ).join(',')
+
+        )
+
+    ];
+
+    const blob = new Blob(
+
+        [rows.join('\n')],
+
+        {
+            type: 'text/csv;charset=utf-8'
+        }
+
+    );
+
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+
+    a.href = url;
+
+    a.download = 'health_history.csv';
+
+    a.click();
+
+    URL.revokeObjectURL(url);
+
+});
+
+
+// APPLICATION INITIALISATION
+
+async function init() {
+
+    try {
+
+        db = await openDB();
+
+        records = await getAll();
+
+        profile = await getProfile();
+
+        $('gender').value = profile.gender || 'Prefer not to say';
+
+        $('height').value = profile.height_cm ?? '';
+
+        render();
+
+    } catch(e) {
+
+        document.querySelector('main').insertAdjacentHTML(
+
+            'afterbegin',
+
+            '<div class="notice error">Your browser could not open local storage for this app. Please use a modern browser with IndexedDB enabled.</div>'
+
+        );
+
+        console.error(e);
+
+    }
+
+}
+
+init();
+
+</script>
+
+</body>
+</html>

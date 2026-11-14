@@ -2432,4 +2432,8 @@ def render_health_tracker(db_path=DB_PATH):
             df,
             db_path,
             profile
+<<<<<<< HEAD
         )
+=======
+        )
+>>>>>>> 4c5a36e7cc85c554876f99b787a0c3109b5032dc
