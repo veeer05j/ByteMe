@@ -205,31 +205,29 @@
 </section>
   <!-- ================= COACH ================= -->
   <section class="tab-page" id="page-coach">
-    <div class="card">
-      <h2>AI Coach</h2>
-      <p class="muted">Groq · gpt-oss-20b. Your key is stored only on this device.</p>
-      <div class="row">
-        <input type="password" id="coachKey" placeholder="gsk_..." autocomplete="off">
-        <button class="btn primary" id="coachKeySave" type="button">Save</button>
-        <button class="btn ghost" id="coachKeyClear" type="button">Clear</button>
-      </div>
-      <p class="status" id="coachKeyStatus"></p>
+  <div class="card">
+    <h2>AI Coach</h2>
+    <p class="muted small">Ask about food, sleep, movement or daily habits. Practical tips, no medical advice.</p>
+  </div>
+
+  <div class="card">
+    <div class="chat-log" id="chatLog"></div>
+
+    <div class="chips">
+      <button class="chip" data-prompt="What should I eat after a workout?">Post-workout meal</button>
+      <button class="chip" data-prompt="How can I sleep better tonight?">Better sleep</button>
+      <button class="chip" data-prompt="Give me a 20 minute home workout.">Home workout</button>
+      <button class="chip" data-prompt="Cheap healthy meals in Mauritius">Cheap meals</button>
     </div>
 
-    <div class="card chat-card">
-      <div class="chat-log" id="chatLog"></div>
-      <div class="chips">
-        <button class="chip" data-prompt="I feel tired every afternoon. What should I change?" type="button">Afternoon slump</button>
-        <button class="chip" data-prompt="Suggest a cheap high-protein meal using food from Mauritius." type="button">Local meal idea</button>
-        <button class="chip" data-prompt="I slept badly. Give me a 3-step plan for today." type="button">Bad sleep plan</button>
-        <button class="chip" data-prompt="How do I start exercising if I am a complete beginner?" type="button">Start exercising</button>
-      </div>
-      <form id="chatForm" class="row">
-        <input type="text" id="chatInput" placeholder="Ask your coach…" autocomplete="off">
-        <button class="btn primary" type="submit">Send</button>
-      </form>
-    </div>
-  </section>
+    <form id="chatForm" class="row">
+      <input id="chatInput" type="text" placeholder="Ask the coach..." autocomplete="off" />
+      <button class="btn primary" type="submit">Send</button>
+    </form>
+
+    <p class="status" id="chatStatus"></p>
+  </div>
+</section>
 
 </main>
 

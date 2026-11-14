@@ -613,19 +613,8 @@ function resetRoutines() {
   toast('Ticks reset');
 }
 
-const GROQ_KEY = 'dayweave.groqKey';
 const CHAT_KEY = 'dayweave.chat';
-const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
-const GROQ_MODEL = 'openai/gpt-oss-20b';
-
-const SYSTEM_PROMPT =
-  'You are DayWeave Coach, a friendly health and wellbeing assistant for people living in Mauritius. ' +
-  'Rules: Reply in plain text only, never use markdown symbols like ** or #. ' +
-  'Keep every answer under 120 words. ' +
-  'Never diagnose a condition and never state a medicine dosage. ' +
-  'Suggest food and habits that are easy to find in Mauritius: dholl, rice, fish, chicken, rougaille, local vegetables, seasonal fruit. ' +
-  'If the user mentions chest pain, difficulty breathing, fainting, or a high fever in a child, tell them to go to the nearest hospital or call 114 immediately. ' +
-  'Be encouraging and practical, and give at most three concrete steps.';
+const CHAT_URL = '/api/chat';
 
 let chatHistory = [];
 let coachBusy = false;
@@ -653,7 +642,9 @@ function localCoachReply(text) {
 
 function loadChat() {
   const saved = readJSON(CHAT_KEY, []);
-  chatHistory = Array.isArray(saved) ? saved : [];
+  chatHistory = Array.isArray(saved)
+    ? saved.filter(function (m) { return !m.pending; })
+    : [];
 }
 
 function persistChat() {
@@ -705,17 +696,11 @@ async function askCoach(text) {
   const question = String(text || '').trim();
   if (!question || coachBusy) return;
 
-  const key = (localStorage.getItem(GROQ_KEY) || '').trim();
   coachBusy = true;
   pushChat('user', question);
-
-  if (!key) {
-    pushChat('assistant', localCoachReply(question) + '\n\n(Add your Groq API key above for live answers.)');
-    coachBusy = false;
-    return;
-  }
-
   pushChat('assistant', 'Thinking…', true);
+
+  let reply = '';
 
   try {
     const history = chatHistory
@@ -723,74 +708,28 @@ async function askCoach(text) {
       .slice(-10)
       .map(function (m) { return { role: m.role, content: m.content }; });
 
-    const res = await fetch(GROQ_URL, {
+    const res = await fetch(CHAT_URL, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + key
-      },
-      body: JSON.stringify({
-        model: GROQ_MODEL,
-        messages: [{ role: 'system', content: SYSTEM_PROMPT }].concat(history),
-        temperature: 0.6,
-        max_tokens: 500
-      })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: history })
     });
 
-    if (!res.ok) {
-      const body = await res.text();
-      throw new Error(res.status + ' ' + body.slice(0, 140));
-    }
+    if (!res.ok) throw new Error('HTTP ' + res.status);
 
     const data = await res.json();
-    let reply = 'No reply received.';
-    if (data && data.choices && data.choices[0] && data.choices[0].message) {
-      reply = String(data.choices[0].message.content || '').trim();
-    }
-    replacePending(reply || 'No reply received.');
+    reply = data && data.reply ? String(data.reply).trim() : '';
+    if (!reply) throw new Error('empty reply');
   } catch (err) {
-    replacePending(
-      'Could not reach the coach right now (' + err.message + ').\n\nOffline tip: ' + localCoachReply(question)
-    );
-  } finally {
-    coachBusy = false;
+    reply = localCoachReply(question);
   }
-}
 
-function updateCoachKeyStatus() {
-  const el = $('#coachKeyStatus');
-  const key = (localStorage.getItem(GROQ_KEY) || '').trim();
-  if (!el) return;
-  el.textContent = key
-    ? 'Key saved on this device only. Live answers enabled.'
-    : 'No key yet. The coach will use offline tips.';
-  const input = $('#coachKey');
-  if (input && key) input.value = key;
+  replacePending(reply);
+  coachBusy = false;
 }
 
 function initCoach() {
   loadChat();
   renderChat();
-  updateCoachKeyStatus();
-
-  const save = $('#coachKeySave');
-  if (save) save.addEventListener('click', function () {
-    const input = $('#coachKey');
-    const val = input ? input.value.trim() : '';
-    if (!val) { toast('Paste a key first'); return; }
-    localStorage.setItem(GROQ_KEY, val);
-    updateCoachKeyStatus();
-    toast('Groq key saved');
-  });
-
-  const clear = $('#coachKeyClear');
-  if (clear) clear.addEventListener('click', function () {
-    localStorage.removeItem(GROQ_KEY);
-    const input = $('#coachKey');
-    if (input) input.value = '';
-    updateCoachKeyStatus();
-    toast('Key cleared');
-  });
 
   const form = $('#chatForm');
   if (form) form.addEventListener('submit', function (e) {
@@ -1485,6 +1424,7 @@ function initCoach() {
 
   async function startCamera() {
     if (running) return;
+    if (!video) { setStatus('Camera element is missing.'); return; }
 
     try {
       setStatus('Starting camera…');
@@ -1703,14 +1643,6 @@ async function boot() {
   document.addEventListener('dayweave:placesready', function () {
     fillPlaceSelect();
   });
-
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function () {
-      navigator.serviceWorker.register('./sw.js').catch(function (err) {
-        console.warn('Service worker registration failed:', err);
-      });
-    });
-  }
 }
 
 if (document.readyState === 'loading') {
