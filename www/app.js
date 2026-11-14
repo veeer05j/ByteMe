@@ -1,4 +1,3 @@
-
 'use strict';
 
 const $ = (sel, root = document) => root.querySelector(sel);
@@ -1664,48 +1663,6 @@ function initCoach() {
 
   steps = loadToday();
   render();
-})();
-
-(function initDemoVideos() {
-  const dlg   = $('#demoDialog');
-  const video = $('#demoVideo');
-  const title = $('#demoTitle');
-  const close = $('#demoClose');
-  if (!dlg || !video) return;
-
-  function open(src, name) {
-    if (title) title.textContent = name || 'Exercise';
-    video.src = src;
-    video.load();
-
-    if (typeof dlg.showModal === 'function') {
-      if (!dlg.open) dlg.showModal();
-    } else {
-      dlg.setAttribute('open', '');
-    }
-
-    const p = video.play();
-    if (p && p.catch) p.catch(function () {});
-  }
-
-  function shut() {
-    try { video.pause(); } catch (e) {}
-    video.removeAttribute('src');
-    video.load();
-    if (dlg.open) dlg.close();
-  }
-
-  $$('.demo-card').forEach(function (card) {
-    card.addEventListener('click', function () {
-      open(card.dataset.src, card.dataset.title);
-    });
-  });
-
-  if (close) close.addEventListener('click', shut);
-  dlg.addEventListener('close', shut);
-  dlg.addEventListener('click', function (e) {
-    if (e.target === dlg) shut();
-  });
 })();
 
 async function boot() {

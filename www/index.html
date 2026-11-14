@@ -179,57 +179,30 @@
 
   <!-- ================= WORKOUT ================= -->
   <section class="tab-page" id="page-workout">
-    <div class="card">
-      <h2>Correct form</h2>
-      <p class="muted">Watch a clip before you start. Tap to play.</p>
-      <div class="demo-row">
-        <button class="demo-card" type="button" data-src="videos/squat.mp4" data-title="Squat">
-          <span class="demo-thumb">
-            <img src="videos/squat-poster.jpg" alt="" loading="lazy">
-            <span class="demo-play" aria-hidden="true">▶</span>
-          </span>
-          <strong>Squat</strong>
-        </button>
-        <button class="demo-card" type="button" data-src="videos/pushup.mp4" data-title="Push-up">
-          <span class="demo-thumb">
-            <img src="videos/pushup-poster.jpg" alt="" loading="lazy">
-            <span class="demo-play" aria-hidden="true">▶</span>
-          </span>
-          <strong>Push-up</strong>
-        </button>
-        <button class="demo-card" type="button" data-src="videos/plank.mp4" data-title="Plank">
-          <span class="demo-thumb">
-            <img src="videos/plank-poster.jpg" alt="" loading="lazy">
-            <span class="demo-play" aria-hidden="true">▶</span>
-          </span>
-          <strong>Plank</strong>
-        </button>
-      </div>
+  <div class="card">
+    <h2>Squat Counter</h2>
+    <p class="muted small">Prop the phone up so your whole body is in frame.</p>
+
+    <div class="video-wrap">
+      <video id="wVideo" playsinline muted autoplay></video>
+      <canvas id="wCanvas"></canvas>
     </div>
 
-    <div class="card">
-      <h2>Squat counter</h2>
-      <p class="muted">Prop the phone so your whole body is visible. Step back about 2 metres.</p>
-      <div class="video-wrap">
-        <video id="wVideo" playsinline muted autoplay></video>
-        <canvas id="wCanvas"></canvas>
-      </div>
-      <div class="stat-row">
-        <div class="stat"><span class="stat-label">Reps</span><strong id="wReps">0</strong></div>
-        <div class="stat"><span class="stat-label">Sets</span><strong id="wSets">0</strong></div>
-        <div class="stat"><span class="stat-label">State</span><strong id="wState">idle</strong></div>
-      </div>
-      <div class="row">
-        <button class="btn primary" id="wStart" type="button">Start camera</button>
-        <button class="btn ghost" id="wStop" type="button">Stop</button>
-      </div>
-      <form id="wForm" class="row">
-        <button class="btn ghost" type="submit">Reset counters</button>
-      </form>
-      <p class="status" id="wStatus"></p>
+    <div class="stat-row">
+      <div class="stat"><span class="stat-label">Reps</span><strong id="wReps">0</strong></div>
+      <div class="stat"><span class="stat-label">Sets</span><strong id="wSets">0</strong></div>
+      <div class="stat"><span class="stat-label">State</span><strong id="wState">Idle</strong></div>
     </div>
-  </section>
 
+    <div class="row" style="margin-top:12px;">
+      <button class="btn primary" id="wStart">Start camera</button>
+      <button class="btn" id="wStop" disabled>Stop</button>
+    </div>
+
+    <p class="status" id="wStatus">Camera is off.</p>
+    <p class="status" id="wForm"></p>
+  </div>
+</section>
   <!-- ================= COACH ================= -->
   <section class="tab-page" id="page-coach">
     <div class="card">
