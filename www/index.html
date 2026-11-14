@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0F172A">
+<meta name="description" content="DayWeave — health, routines and care, powered to live better.">
+<title>DayWeave — Life Powered by Tech</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-tab="health">
+
+<header class="app-header">
+  <div class="brand">
+    <span class="brand-mark">DW</span>
+    <div>
+      <h1>DayWeave</h1>
+      <p class="brand-sub">Powered to Live Better</p>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ================= HEALTH ================= -->
+  <section class="tab-page active" id="page-health">
+    <div class="card">
+      <h2>Today's health</h2>
+      <p class="muted">Log your numbers — the chart keeps your last 7 days.</p>
+      <div class="grid-2">
+        <label>Weight (kg)<input type="number" id="hWeight" step="0.1" min="20" max="300" placeholder="70"></label>
+        <label>Water (L)<input type="number" id="hWater" step="0.1" min="0" max="15" placeholder="2"></label>
+        <label>Sleep (h)<input type="number" id="hSleep" step="0.1" min="0" max="24" placeholder="7"></label>
+        <label>Steps<input type="number" id="hSteps" step="1" min="0" max="100000" placeholder="5000"></label>
+      </div>
+      <button class="btn primary" id="hSave" type="button">Save today</button>
+      <p class="status" id="hStatus"></p>
+    </div>
+
+    <div class="card">
+      <h2>Step counter</h2>
+      <p class="muted">Counts while DayWeave is open, using the phone's motion sensor.</p>
+      <div class="step-readout">
+        <strong id="stepLive">0</strong>
+        <span class="muted small">steps today</span>
+      </div>
+      <div class="row">
+        <button class="btn primary" id="stepStart" type="button">Start</button>
+        <button class="btn ghost" id="stepStop" type="button" disabled>Stop</button>
+        <button class="btn ghost" id="stepUse" type="button" disabled>Use in today's log</button>
+      </div>
+      <p class="status" id="stepStatus">Not tracking</p>
+    </div>
+
+    <div class="card">
+      <h2>7-day trend</h2>
+      <div class="chart-wrap">
+        <canvas id="healthChart"></canvas>
+        <p class="empty" id="chartEmpty">No entries yet. Save today's numbers to start the chart.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>4-7-8 breathing</h2>
+      <p class="muted">Inhale 4s · hold 7s · exhale 8s. Three rounds lowers stress fast.</p>
+      <div class="breath-stage">
+        <div class="breath-circle" id="breathCircle"></div>
+        <span class="breath-label" id="breathLabel">Ready</span>
+      </div>
+      <button class="btn" id="breathBtn" type="button">Start breathing</button>
+    </div>
+  </section>
+
+  <!-- ================= MEDICINES ================= -->
+  <section class="tab-page" id="page-meds">
+    <div class="card">
+      <h2>Add a reminder</h2>
+      <form id="medsForm" class="stack">
+        <label>Medicine name
+          <input type="text" id="medsName" placeholder="Paracetamol" maxlength="60" required>
+        </label>
+        <label>Time
+          <input type="time" id="medsTime" required>
+        </label>
+        <label>Repeat
+          <select id="medsRepeat">
+            <option value="daily">Every day</option>
+            <option value="once">One time only</option>
+          </select>
+        </label>
+        <button class="btn primary" type="submit">Save reminder</button>
+        <p class="status" id="medsFormMsg"></p>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2>Your reminders</h2>
+      <ul class="list" id="medsList"></ul>
+      <p class="empty" id="medsEmpty">No reminders yet.</p>
+      <p class="muted small" id="medsLastChecked"></p>
+    </div>
+
+    <div class="card">
+      <h2>Alert history</h2>
+      <ul class="list" id="medsHistory"></ul>
+      <p class="empty" id="medsHistoryEmpty">Nothing yet.</p>
+    </div>
+  </section>
+
+  <!-- ================= APPOINTMENTS ================= -->
+  <section class="tab-page" id="page-appts">
+    <div class="card">
+      <h2>Book an appointment</h2>
+      <form id="apptForm" class="stack">
+        <label>Facility
+          <select id="apptPlace"></select>
+        </label>
+        <div class="grid-2">
+          <label>Date<input type="date" id="apptDate"></label>
+          <label>Time<input type="time" id="apptTime"></label>
+        </div>
+        <label>Reason
+          <input type="text" id="apptReason" maxlength="120" placeholder="Check-up">
+        </label>
+        <button class="btn primary" type="submit">Book appointment</button>
+        <p class="status" id="apptMsg"></p>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2>Your appointments</h2>
+      <ul class="list" id="apptList"></ul>
+      <p class="empty" id="apptEmpty">No appointments booked.</p>
+    </div>
+  </section>
+
+  <!-- ================= MAP ================= -->
+  <section class="tab-page" id="page-map">
+    <div class="card">
+      <h2>Health facilities</h2>
+      <p class="muted">Sorted from your real location. Choose how far to search.</p>
+      <button class="btn primary" id="mapLocateBtn" type="button">Use my location</button>
+      <div class="scope-row">
+        <button class="scope-btn active" data-scope="nearby" type="button">Nearby (10 km)</button>
+        <button class="scope-btn" data-scope="all" type="button">Across Mauritius</button>
+      </div>
+      <p class="status" id="mapStatus">Waiting for location…</p>
+      <div class="arrival" id="arrivalBanner" hidden></div>
+      <div id="mapContainer" class="map"></div>
+    </div>
+
+    <div class="card">
+      <h2 id="placeListTitle">Facilities</h2>
+      <ul class="list" id="placeList"></ul>
+      <p class="empty" id="placeEmpty">Allow location to see the nearest facilities.</p>
+    </div>
+  </section>
+
+  <!-- ================= ROUTINES ================= -->
+  <section class="tab-page" id="page-routines">
+    <div class="card">
+      <h2>Daily routines</h2>
+      <p class="muted">Ticks reset every morning at midnight.</p>
+      <form id="routineForm" class="row">
+        <input type="text" id="routineInput" placeholder="Drink 2L water" maxlength="80" autocomplete="off">
+        <button class="btn primary" type="submit">Add</button>
+      </form>
+      <p class="status" id="routineProgress"></p>
+      <div class="progress"><div class="progress-bar" id="routineBar"></div></div>
+      <ul class="list" id="routineList"></ul>
+      <p class="empty" id="routineEmpty">No routines yet. Add your first one above.</p>
+      <button class="btn ghost" id="routineReset" type="button">Reset today's ticks</button>
+    </div>
+  </section>
+
+  <!-- ================= WORKOUT ================= -->
+  <section class="tab-page" id="page-workout">
+    <div class="card">
+      <h2>Correct form</h2>
+      <p class="muted">Watch a clip before you start. Tap to play.</p>
+      <div class="demo-row">
+        <button class="demo-card" type="button" data-src="videos/squat.mp4" data-title="Squat">
+          <span class="demo-thumb">
+            <img src="videos/squat-poster.jpg" alt="" loading="lazy">
+            <span class="demo-play" aria-hidden="true">▶</span>
+          </span>
+          <strong>Squat</strong>
+        </button>
+        <button class="demo-card" type="button" data-src="videos/pushup.mp4" data-title="Push-up">
+          <span class="demo-thumb">
+            <img src="videos/pushup-poster.jpg" alt="" loading="lazy">
+            <span class="demo-play" aria-hidden="true">▶</span>
+          </span>
+          <strong>Push-up</strong>
+        </button>
+        <button class="demo-card" type="button" data-src="videos/plank.mp4" data-title="Plank">
+          <span class="demo-thumb">
+            <img src="videos/plank-poster.jpg" alt="" loading="lazy">
+            <span class="demo-play" aria-hidden="true">▶</span>
+          </span>
+          <strong>Plank</strong>
+        </button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Squat counter</h2>
+      <p class="muted">Prop the phone so your whole body is visible. Step back about 2 metres.</p>
+      <div class="video-wrap">
+        <video id="wVideo" playsinline muted autoplay></video>
+        <canvas id="wCanvas"></canvas>
+      </div>
+      <div class="stat-row">
+        <div class="stat"><span class="stat-label">Reps</span><strong id="wReps">0</strong></div>
+        <div class="stat"><span class="stat-label">Sets</span><strong id="wSets">0</strong></div>
+        <div class="stat"><span class="stat-label">State</span><strong id="wState">idle</strong></div>
+      </div>
+      <div class="row">
+        <button class="btn primary" id="wStart" type="button">Start camera</button>
+        <button class="btn ghost" id="wStop" type="button">Stop</button>
+      </div>
+      <form id="wForm" class="row">
+        <button class="btn ghost" type="submit">Reset counters</button>
+      </form>
+      <p class="status" id="wStatus"></p>
+    </div>
+  </section>
+
+  <!-- ================= COACH ================= -->
+  <section class="tab-page" id="page-coach">
+    <div class="card">
+      <h2>AI Coach</h2>
+      <p class="muted">Groq · gpt-oss-20b. Your key is stored only on this device.</p>
+      <div class="row">
+        <input type="password" id="coachKey" placeholder="gsk_..." autocomplete="off">
+        <button class="btn primary" id="coachKeySave" type="button">Save</button>
+        <button class="btn ghost" id="coachKeyClear" type="button">Clear</button>
+      </div>
+      <p class="status" id="coachKeyStatus"></p>
+    </div>
+
+    <div class="card chat-card">
+      <div class="chat-log" id="chatLog"></div>
+      <div class="chips">
+        <button class="chip" data-prompt="I feel tired every afternoon. What should I change?" type="button">Afternoon slump</button>
+        <button class="chip" data-prompt="Suggest a cheap high-protein meal using food from Mauritius." type="button">Local meal idea</button>
+        <button class="chip" data-prompt="I slept badly. Give me a 3-step plan for today." type="button">Bad sleep plan</button>
+        <button class="chip" data-prompt="How do I start exercising if I am a complete beginner?" type="button">Start exercising</button>
+      </div>
+      <form id="chatForm" class="row">
+        <input type="text" id="chatInput" placeholder="Ask your coach…" autocomplete="off">
+        <button class="btn primary" type="submit">Send</button>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<nav class="bottom-nav" id="bottomNav">
+  <button class="nav-btn active" data-tab="health" type="button"><span>❤️</span>Health</button>
+  <button class="nav-btn" data-tab="meds" type="button"><span>💊</span>Meds</button>
+  <button class="nav-btn" data-tab="appts" type="button"><span>📅</span>Visits</button>
+  <button class="nav-btn" data-tab="map" type="button"><span>🗺️</span>Map</button>
+  <button class="nav-btn" data-tab="routines" type="button"><span>✅</span>Routines</button>
+  <button class="nav-btn" data-tab="workout" type="button"><span>🏋️</span>Workout</button>
+  <button class="nav-btn" data-tab="coach" type="button"><span>🤖</span>Coach</button>
+</nav>
+
+<div id="toast" class="toast"></div>
+
+<dialog id="medsDialog">
+  <h3>Medicine time</h3>
+  <ul id="medsDialogList"></ul>
+  <button class="btn primary" id="medsDismiss" type="button">Got it</button>
+</dialog>
+
+<dialog id="demoDialog">
+  <h3 id="demoTitle">Exercise</h3>
+  <video id="demoVideo" playsinline controls preload="none"></video>
+  <button class="btn primary" id="demoClose" type="button">Close</button>
+</dialog>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
