@@ -1,0 +1,8 @@
+{
+  "appId": "com.veeer05j.bytheme",
+  "appName": "ByteMe",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  }
+}
