@@ -5,3 +5,9 @@ bcrypt
 pyotp
 qrcode[pil]
 cryptography
+Flask
+flask-cors
+python-dotenv
+groq
+pandas
+openpyxl

@@ -202,6 +202,8 @@ function switchTab(tab) {
     const sel = $('#apptPlace');
     if (sel && sel.options.length === 0) fillPlaceSelect();
   }
+
+  document.dispatchEvent(new CustomEvent('dayweave:tab', { detail: { tab: tab } }));
 }
 
 const HEALTH_KEY = 'dayweave.health';
@@ -622,22 +624,37 @@ let coachBusy = false;
 function localCoachReply(text) {
   const t = String(text || '').toLowerCase();
 
+  if (t.indexOf('diabet') !== -1 || t.indexOf('blood sugar') !== -1 || t.indexOf('glucose') !== -1) {
+    return 'Diabetes needs a real doctor, not an app. Book an appointment at your nearest Area Health Centre or hospital from the Map tab. Until then: 1) Do not skip meals. 2) Keep sugary drinks and white bread small; choose vegetables, dholl, fish and eggs. 3) Walk 20 minutes after your largest meal. If you feel shaky, sweaty or confused, eat something sweet now and call 114.';
+  }
+  if (t.indexOf('pressure') !== -1 || t.indexOf('hypertens') !== -1) {
+    return 'Blood pressure is best checked by a nurse at your nearest Area Health Centre — it is free and quick. Meanwhile: 1) Cut back on salt and bouillon cubes. 2) Walk 20 minutes most days. 3) Do not stop any medicine you were given without asking your doctor. If you have chest pain, a bad headache or blurred vision, go to the nearest hospital or call 114.';
+  }
+  if (t.indexOf('workout') !== -1 || t.indexOf('exercise') !== -1 || t.indexOf('gym') !== -1 || t.indexOf('train') !== -1 || t.indexOf('squat') !== -1 || t.indexOf('push') !== -1 || t.indexOf('fit') !== -1 || t.indexOf('sport') !== -1) {
+    return 'No equipment needed: 1) 10 squats. 2) 5 push-ups on your knees if needed. 3) 20 seconds of marching in place. Rest 60 seconds and repeat three times, about 10 minutes total. Use the Workout tab for the camera squat counter. If you feel sharp pain or dizzy, stop.';
+  }
+  if (t.indexOf('walk') !== -1 || t.indexOf('steps') !== -1 || t.indexOf('move') !== -1) {
+    return 'Aim for a 10 minute walk after each main meal. It aids digestion and quietly adds a few thousand steps a day. Start the step counter on the Health tab while you walk so it logs automatically.';
+  }
   if (t.indexOf('tired') !== -1 || t.indexOf('energy') !== -1 || t.indexOf('slump') !== -1) {
     return 'Try three things: 1) Eat a proper breakfast with protein — eggs or dholl with rice. 2) Drink water at 11:00 and again at 15:00; afternoon tiredness is often dehydration. 3) Stand up and walk for five minutes after lunch. If the tiredness lasts more than two weeks, see a doctor at your nearest Area Health Centre.';
   }
-  if (t.indexOf('sleep') !== -1 || t.indexOf('insomnia') !== -1) {
+  if (t.indexOf('sleep') !== -1 || t.indexOf('insomnia') !== -1 || t.indexOf('rest') !== -1) {
     return 'Three steps for tonight: 1) No screen for 30 minutes before bed. 2) Keep the room dark and cool. 3) Do four rounds of the 4-7-8 breathing exercise in the Health tab. If you still cannot sleep after two weeks, book an appointment with a doctor.';
   }
-  if (t.indexOf('eat') !== -1 || t.indexOf('meal') !== -1 || t.indexOf('food') !== -1 || t.indexOf('protein') !== -1) {
+  if (t.indexOf('eat') !== -1 || t.indexOf('meal') !== -1 || t.indexOf('food') !== -1 || t.indexOf('protein') !== -1 || t.indexOf('diet') !== -1) {
     return 'Cheap protein in Mauritius: dholl, eggs, tinned tuna, chicken thighs, and fish from the market. A simple plate: rice, dholl, rougaille tomato, and a green vegetable. Fill half the plate with vegetables, a quarter with protein, a quarter with rice.';
   }
-  if (t.indexOf('exercise') !== -1 || t.indexOf('sport') !== -1 || t.indexOf('fit') !== -1) {
-    return 'Start small and stay consistent: 1) Walk 20 minutes every day this week. 2) Add 10 squats using the Workout tab once that feels easy. 3) Increase by a little each week. Consistency beats intensity — three short sessions a week is a real result.';
+  if (t.indexOf('water') !== -1 || t.indexOf('hydrat') !== -1 || t.indexOf('drink') !== -1) {
+    return 'Keep a bottle within reach and sip between tasks. In Mauritian heat, plain water is usually enough for normal daily activity. Log it on the Health tab so the trend chart stays useful.';
   }
-  if (t.indexOf('stress') !== -1 || t.indexOf('anxious') !== -1 || t.indexOf('anxiety') !== -1) {
+  if (t.indexOf('stress') !== -1 || t.indexOf('anxious') !== -1 || t.indexOf('anxiety') !== -1 || t.indexOf('calm') !== -1) {
     return 'Try this now: four rounds of 4-7-8 breathing in the Health tab, then a 10-minute walk outside. Write down the one thing worrying you most and one small action you can take today. If anxiety is affecting your sleep or work for more than a month, speak to a doctor.';
   }
-  return 'I can help with sleep, energy, food, exercise and stress. Tell me a little more about what you are feeling and I will give you three practical steps. For anything urgent — chest pain, trouble breathing, fainting — go to the nearest hospital or call 114.';
+  if (t.indexOf('pain') !== -1 || t.indexOf('hurt') !== -1 || t.indexOf('sick') !== -1 || t.indexOf('fever') !== -1) {
+    return 'I cannot examine you, so please get this checked. For a mild problem, your nearest Area Health Centre is free and needs no appointment. For chest pain, trouble breathing, fainting, or a high fever in a child, go to the nearest hospital or call 114 now.';
+  }
+  return 'I can help with workouts, food, sleep, water, stress and general health questions. Tell me a little more and I will give you three practical steps. For anything urgent — chest pain, trouble breathing, fainting — go to the nearest hospital or call 114.';
 }
 
 function loadChat() {
@@ -720,6 +737,7 @@ async function askCoach(text) {
     reply = data && data.reply ? String(data.reply).trim() : '';
     if (!reply) throw new Error('empty reply');
   } catch (err) {
+    console.error('Coach fetch failed:', err);
     reply = localCoachReply(question);
   }
 
@@ -1291,6 +1309,7 @@ function initCoach() {
   let sets = 0;
   let phase = 'up';
   let lastVideoTime = -1;
+  let session = 0;
 
   const video = $('#wVideo');
   const canvas = $('#wCanvas');
@@ -1308,6 +1327,13 @@ function initCoach() {
     const s = $('#wSets');
     if (r) r.textContent = reps;
     if (s) s.textContent = sets;
+  }
+  function syncButtons() {
+    const startEl = $('#wStart');
+    const stopEl = $('#wStop');
+    const open = !!stream;
+    if (startEl) startEl.disabled = open;
+    if (stopEl) stopEl.disabled = !open;
   }
 
   function angle(a, b, c) {
@@ -1423,46 +1449,66 @@ function initCoach() {
   }
 
   async function startCamera() {
-    if (running) return;
+    if (running || stream) return;
     if (!video) { setStatus('Camera element is missing.'); return; }
+
+    const mine = ++session;
 
     try {
       setStatus('Starting camera…');
-      stream = await navigator.mediaDevices.getUserMedia({
+      const opened = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } },
         audio: false
       });
 
+      if (mine !== session) {
+        opened.getTracks().forEach(function (t) { t.stop(); });
+        return;
+      }
+
+      stream = opened;
       video.srcObject = stream;
+      syncButtons();
+
       await video.play();
+      setStatus('Loading the pose model…');
 
-      await ensureLandmarker();
+      const marker = await ensureLandmarker();
+      if (mine !== session) return;
 
+      landmarker = marker;
       running = true;
       lastVideoTime = -1;
       setStatus('Camera on. Stand back so your whole body is visible, then squat.');
+      setState('ready');
       requestAnimationFrame(loop);
     } catch (err) {
-      running = false;
+      if (mine !== session) return;
       setStatus('Could not start: ' + (err && err.message ? err.message : 'unknown error'));
       stopCamera();
     }
   }
 
   function stopCamera() {
+    session++;
     running = false;
 
     if (stream) {
       stream.getTracks().forEach(function (t) { t.stop(); });
       stream = null;
     }
-    if (video) video.srcObject = null;
+    if (video) {
+      try { video.pause(); } catch (e) {}
+      video.srcObject = null;
+    }
     if (canvas) {
       const ctx = canvas.getContext('2d');
       if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
+
     setState('idle');
     setStatus('Camera stopped.');
+    syncButtons();
   }
 
   function resetCounters() {
@@ -1470,19 +1516,24 @@ function initCoach() {
     sets = 0;
     phase = 'up';
     paintCounters();
-    setState('idle');
+    setState(running ? 'ready' : 'idle');
     toast('Counters reset');
   }
 
   const start = $('#wStart');
   const stop = $('#wStop');
-  const form = $('#wForm');
+  const reset = $('#wReset');
 
   if (start) start.addEventListener('click', startCamera);
   if (stop) stop.addEventListener('click', stopCamera);
-  if (form) form.addEventListener('submit', function (e) { e.preventDefault(); resetCounters(); });
+  if (reset) reset.addEventListener('click', resetCounters);
+
+  document.addEventListener('dayweave:tab', function (e) {
+    if (e.detail && e.detail.tab !== 'workout' && stream) stopCamera();
+  });
 
   paintCounters();
+  syncButtons();
 })();
 
 (function initSteps() {
