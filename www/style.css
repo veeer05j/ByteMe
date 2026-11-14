@@ -187,34 +187,6 @@ select option{background:var(--bg2);color:var(--text);}
 .stat-label{display:block;font-size:.7rem;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);}
 .stat strong{font-size:1.35rem;color:var(--accent);}
 
-/* ---------- exercise demo gallery ---------- */
-.demo-row{
-  display:flex;gap:10px;overflow-x:auto;padding:6px 0 4px;
-  scrollbar-width:none;scroll-snap-type:x mandatory;
-}
-.demo-row::-webkit-scrollbar{display:none;}
-.demo-card{
-  flex:0 0 148px;scroll-snap-align:start;
-  display:flex;flex-direction:column;gap:8px;
-  padding:8px;border-radius:14px;
-  border:1px solid var(--line);background:var(--bg2);
-  color:var(--text);font-family:inherit;font-weight:600;font-size:.88rem;
-  text-align:left;cursor:pointer;
-  transition:transform .1s ease;
-}
-.demo-card:active{transform:scale(.97);}
-.demo-thumb{
-  position:relative;display:block;width:100%;aspect-ratio:16/9;
-  border-radius:10px;overflow:hidden;background:#0B1220;
-}
-.demo-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
-.demo-play{
-  position:absolute;inset:0;display:grid;place-items:center;
-  font-size:1.4rem;color:#fff;
-  background:rgba(2,6,23,.35);
-  text-shadow:0 2px 8px #000;
-}
-
 /* ---------- chat ---------- */
 .chat-log{
   max-height:46vh;overflow-y:auto;
@@ -283,19 +255,6 @@ dialog#medsDialog::backdrop{background:rgba(2,6,23,.72);}
   background:rgba(56,189,248,.12);
   border:1px solid rgba(56,189,248,.3);
   font-weight:600;
-}
-
-dialog#demoDialog{
-  border:none;border-radius:18px;
-  background:var(--card);color:var(--text);
-  padding:16px;width:min(560px,92vw);
-  box-shadow:0 24px 60px rgba(0,0,0,.6);
-}
-dialog#demoDialog::backdrop{background:rgba(2,6,23,.78);}
-dialog#demoDialog h3{margin:0 0 10px;font-size:1rem;}
-#demoVideo{
-  width:100%;max-height:60vh;border-radius:12px;
-  background:#000;display:block;margin-bottom:12px;
 }
 
 @media (min-width:640px){
