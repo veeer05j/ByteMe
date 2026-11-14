@@ -1,6 +1,0 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="Base.Theme.StepCounterApp" parent="Theme.Material3.Light.NoActionBar">
-        <!-- Customize your light theme here. -->
-    </style>
-    <style name="Theme.StepCounterApp" parent="Base.Theme.StepCounterApp" />
-</resources>
